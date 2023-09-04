@@ -1,4 +1,4 @@
-package no.nav.tiltakspenger
+package no.nav.tiltakspenger.dokument
 
 import mu.KotlinLogging
 
