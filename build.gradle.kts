@@ -1,4 +1,5 @@
 val javaVersion = JavaVersion.VERSION_17
+val ktorVersion = "2.3.3"
 val mockkVersion = "1.13.7"
 
 plugins {
@@ -15,6 +16,19 @@ repositories {
 }
 
 dependencies {
+    // Ktor
+    implementation("io.ktor:ktor-client-core:$ktorVersion")
+    implementation("io.ktor:ktor-client-cio:$ktorVersion")
+    implementation("io.ktor:ktor-client-content-negotiation:$ktorVersion")
+    implementation("io.ktor:ktor-client-logging:$ktorVersion")
+    implementation("io.ktor:ktor-http:$ktorVersion")
+    implementation("io.ktor:ktor-server-call-id:$ktorVersion")
+    implementation("io.ktor:ktor-utils:$ktorVersion")
+    implementation("io.ktor:ktor-server-core-jvm:$ktorVersion")
+    implementation("io.ktor:ktor-server-netty-jvm:$ktorVersion")
+    implementation("io.ktor:ktor-server:$ktorVersion")
+    implementation("io.ktor:ktor-server-core:$ktorVersion")
+
     // Align versions of all Kotlin components
     implementation(platform("org.jetbrains.kotlin:kotlin-bom"))
     implementation(kotlin("stdlib"))

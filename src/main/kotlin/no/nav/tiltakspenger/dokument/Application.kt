@@ -2,7 +2,7 @@ package no.nav.tiltakspenger.dokument
 
 import mu.KotlinLogging
 
-fun main() {
+fun main(args: Array<String>) {
     System.setProperty("logback.configurationFile", "egenLogback.xml")
 
     val log = KotlinLogging.logger {}
@@ -14,4 +14,6 @@ fun main() {
     }
 
     log.info { "starting server" }
+
+    io.ktor.server.netty.EngineMain.main(args)
 }
