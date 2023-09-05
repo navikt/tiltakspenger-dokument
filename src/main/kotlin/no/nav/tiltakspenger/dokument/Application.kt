@@ -4,8 +4,8 @@ import io.ktor.server.application.Application
 import io.ktor.server.application.ApplicationStarted
 import io.ktor.server.application.ApplicationStopped
 import io.ktor.server.application.install
-import io.ktor.server.routing.routing
 import io.ktor.server.plugins.callloging.CallLogging
+import io.ktor.server.routing.routing
 import mu.KotlinLogging
 import no.nav.tiltakspenger.dokument.health.healthRoutes
 
