@@ -8,6 +8,13 @@ import io.ktor.server.plugins.callloging.CallLogging
 import io.ktor.server.routing.routing
 import mu.KotlinLogging
 import no.nav.tiltakspenger.dokument.health.healthRoutes
+import no.nav.tiltakspenger.dokument.pdfgen.PdfClient
+import no.nav.tiltakspenger.dokument.søknad.SøknadServiceImpl
+import no.nav.tiltakspenger.dokument.søknad.søknadRoutes
+import no.nav.tiltakspenger.soknad.api.joark.JoarkClient
+import no.nav.tiltakspenger.soknad.api.joark.JoarkServiceImpl
+import no.nav.tiltakspenger.soknad.api.joark.TokenServiceImpl
+import no.nav.tiltakspenger.soknad.api.pdf.PdfServiceImpl
 
 fun main(args: Array<String>) {
     System.setProperty("logback.configurationFile", "egenLogback.xml")
@@ -17,6 +24,7 @@ fun main(args: Array<String>) {
 
     Thread.setDefaultUncaughtExceptionHandler { _, e ->
         log.error { "Uncaught exception logget i securelog" }
+        println(e.message)
         securelog.error(e) { e.message }
     }
 
@@ -24,20 +32,25 @@ fun main(args: Array<String>) {
 }
 
 fun Application.module() {
-    System.setProperty("logback.configurationFile", "egenLogback.xml")
-
     val log = KotlinLogging.logger {}
-    val securelog = KotlinLogging.logger("tjenestekall")
-
-    Thread.setDefaultUncaughtExceptionHandler { _, e ->
-        log.error { "Uncaught exception logget i securelog" }
-        securelog.error(e) { e.message }
-    }
-
+    val joarkService = JoarkServiceImpl(
+        joark = JoarkClient(
+            config = environment.config,
+            tokenService = TokenServiceImpl(),
+        ),
+    )
+    val pdfService = PdfServiceImpl(
+        PdfClient(
+            config = environment.config,
+            client = httpClientCIO(timeout = 10L),
+        ),
+    )
+    val søknadService = SøknadServiceImpl(pdfService, joarkService)
     install(CallLogging)
 
     routing {
         healthRoutes()
+        søknadRoutes(søknadService)
     }
 
     environment.monitor.subscribe(ApplicationStarted) {
