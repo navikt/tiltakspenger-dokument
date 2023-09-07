@@ -28,3 +28,13 @@ spec:
     pool: {{ kafka.pool }}
   secureLogs:
     enabled: true
+    accessPolicy:
+      inbound:
+        rules:
+          - application: tiltakspenger-soknad-api
+            namespace: tpts
+            cluster: { { cluster } }
+      outbound:
+        rules:
+          - application: tiltakspenger-pdfgen
+        external:

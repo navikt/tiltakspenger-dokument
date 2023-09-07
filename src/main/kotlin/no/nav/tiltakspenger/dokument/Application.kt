@@ -32,7 +32,6 @@ fun main(args: Array<String>) {
 }
 
 fun Application.module() {
-    val log = KotlinLogging.logger {}
     val joarkService = JoarkServiceImpl(
         joark = JoarkClient(
             config = environment.config,
@@ -46,11 +45,14 @@ fun Application.module() {
         ),
     )
     val søknadService = SøknadServiceImpl(pdfService, joarkService)
+
+    val log = KotlinLogging.logger {}
     install(CallLogging)
 
     routing {
         healthRoutes()
         søknadRoutes(søknadService)
+
     }
 
     environment.monitor.subscribe(ApplicationStarted) {

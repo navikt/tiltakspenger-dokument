@@ -19,8 +19,12 @@ val log = KotlinLogging.logger { }
 fun Route.søknadRoutes(søknadService: SøknadService) {
     post("/hei") {
         val (søknadDTO, vedlegg) = taInnSøknadSomMultipart(call.receiveMultipart())
-        val journalpostid = søknadService.arkiverIJoark(søknadDTO, vedlegg, call.callId!!)
-        call.respond(status = HttpStatusCode.OK, message = "Den er grei!")
+        val journalpostId = søknadService.arkiverIJoark(søknadDTO, vedlegg, call.callId!!)
+        val søknadResponse = SøknadResponse(
+            journalpostId = journalpostId,
+            innsendingTidspunkt = søknadDTO.innsendingTidspunkt
+        )
+        call.respond(status = HttpStatusCode.OK, message = søknadResponse)
     }
 }
 

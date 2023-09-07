@@ -12,8 +12,6 @@ class SøknadServiceImpl(
         val søknadPDF = pdfService.lagPdf(søknad)
         val vedleggSomPdfer = pdfService.konverterVedlegg(vedlegg)
         return joarkService.sendPdfTilJoark(pdf = søknadPDF, søknadDTO = søknad, vedlegg = vedleggSomPdfer, callId = callId)
-
-        TODO("returner joarkid")
     }
 
     override suspend fun taInnSøknadSomMultipart(søknadSomMultipart: MultiPartData): Pair<SpørsmålsbesvarelserDTO, List<Vedlegg>> {
