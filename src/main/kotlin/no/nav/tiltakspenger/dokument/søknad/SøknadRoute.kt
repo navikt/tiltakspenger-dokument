@@ -20,10 +20,12 @@ fun Route.søknadRoutes(søknadService: SøknadService) {
     post("/hei") {
         val (søknadDTO, vedlegg) = taInnSøknadSomMultipart(call.receiveMultipart())
         val journalpostId = søknadService.arkiverIJoark(søknadDTO, vedlegg, call.callId!!)
+
         val søknadResponse = SøknadResponse(
             journalpostId = journalpostId,
-            innsendingTidspunkt = søknadDTO.innsendingTidspunkt
+            innsendingTidspunkt = søknadDTO.innsendingTidspunkt,
         )
+
         call.respond(status = HttpStatusCode.OK, message = søknadResponse)
     }
 }
@@ -50,7 +52,7 @@ suspend fun taInnSøknadSomMultipart(søknadSomMultipart: MultiPartData): Pair<S
 }
 
 fun PartData.FormItem.toSøknadDTO(): SøknadDTO {
-    return deserialize<SøknadDTO>(this.value)
+    return deserialize(this.value)
 }
 
 fun PartData.FileItem.toVedlegg(): Vedlegg {

@@ -1,2 +1,4 @@
 kafka:
   pool: nav-dev
+endpoints:
+  pdf: localhost:8081/api/v1/genpdf/tpts/soknad

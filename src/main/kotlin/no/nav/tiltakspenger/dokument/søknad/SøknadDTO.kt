@@ -17,28 +17,4 @@ data class SøknadDTO(
     val vedleggsnavn: List<String>,
     val personopplysninger: Personopplysninger,
     val innsendingTidspunkt: LocalDateTime,
-) {
-    companion object {
-        fun toDTO(
-            acr: String,
-            spørsmålsbesvarelser: SpørsmålsbesvarelserDTO,
-            vedleggsnavn: List<String>,
-            fnr: String,
-            person: PersonDTO,
-            innsendingTidspunkt: LocalDateTime,
-        ): SøknadDTO {
-            return SøknadDTO(
-                acr = acr,
-                versjon = "4",
-                spørsmålsbesvarelser = spørsmålsbesvarelser,
-                vedleggsnavn = vedleggsnavn,
-                personopplysninger = Personopplysninger(
-                    ident = fnr,
-                    fornavn = person.fornavn,
-                    etternavn = person.etternavn,
-                ),
-                innsendingTidspunkt = innsendingTidspunkt,
-            )
-        }
-    }
-}
+)

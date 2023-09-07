@@ -7,7 +7,7 @@ class PdfServiceImpl(
     private val pdfGenerator: PdfGenerator,
 ) : PdfService {
     override suspend fun lagPdf(søknadDTO: SøknadDTO) =
-        pdfGenerator.genererPdf(søknadDTO)
+        pdfGenerator.genererSøknadPdf(søknadDTO)
     override suspend fun konverterVedlegg(vedlegg: List<Vedlegg>) =
         pdfGenerator.konverterVedlegg(vedlegg)
 }

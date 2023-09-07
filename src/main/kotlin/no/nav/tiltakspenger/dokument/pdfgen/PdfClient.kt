@@ -33,7 +33,7 @@ class PdfClient(
     private val log: Logger = LoggerFactory.getLogger(this::class.java)
     private val pdfEndpoint = config.property("endpoints.pdf").getString()
 
-    override suspend fun genererPdf(søknadDTO: SøknadDTO): ByteArray {
+    override suspend fun genererSøknadPdf(søknadDTO: SøknadDTO): ByteArray {
         try {
             log.info("Starter generering av søknadspdf")
             return client.post("$pdfEndpoint/$pdfgenPath/$SOKNAD_TEMPLATE") {

@@ -26,7 +26,7 @@ class JoarkClient(
 ) : Joark {
 
     private val log = LoggerFactory.getLogger(this::class.java)
-    private val joarkEndpoint = config.property("endpoints.joark").getString()
+    private val joarkEndpoint = "" // config.property("endpoints.joark").getString() // TODO: Legg inn endpoints.joark i environment-variabler
 
     override suspend fun opprettJournalpost(
         dokumentInnhold: Journalpost,

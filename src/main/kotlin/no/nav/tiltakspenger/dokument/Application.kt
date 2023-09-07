@@ -4,7 +4,9 @@ import io.ktor.server.application.Application
 import io.ktor.server.application.ApplicationStarted
 import io.ktor.server.application.ApplicationStopped
 import io.ktor.server.application.install
+import io.ktor.server.plugins.callid.callIdMdc
 import io.ktor.server.plugins.callloging.CallLogging
+import io.ktor.server.request.httpMethod
 import io.ktor.server.routing.routing
 import mu.KotlinLogging
 import no.nav.tiltakspenger.dokument.health.healthRoutes
@@ -18,6 +20,7 @@ import no.nav.tiltakspenger.soknad.api.pdf.PdfServiceImpl
 
 fun main(args: Array<String>) {
     System.setProperty("logback.configurationFile", "egenLogback.xml")
+    System.setProperty("endpoints.pdf", "http://localhost:8081") // TODO: legg denne inn i environment variabler og få det til å funke
 
     val log = KotlinLogging.logger {}
     val securelog = KotlinLogging.logger("tjenestekall")
@@ -47,12 +50,11 @@ fun Application.module() {
     val søknadService = SøknadServiceImpl(pdfService, joarkService)
 
     val log = KotlinLogging.logger {}
-    install(CallLogging)
+    installCallLogging()
 
     routing {
         healthRoutes()
         søknadRoutes(søknadService)
-
     }
 
     environment.monitor.subscribe(ApplicationStarted) {
@@ -60,5 +62,18 @@ fun Application.module() {
     }
     environment.monitor.subscribe(ApplicationStopped) {
         log.info { "Stopper server" }
+    }
+}
+
+internal fun Application.installCallLogging() {
+    install(CallLogging) {
+        callIdMdc("call-id")
+        format { call ->
+            val status = call.response.status()
+            val httpMethod = call.request.httpMethod.value
+            val req = call.request
+            val userAgent = call.request.headers["User-Agent"]
+            "Status: $status, HTTP method: $httpMethod, User agent: $userAgent req: $req"
+        }
     }
 }

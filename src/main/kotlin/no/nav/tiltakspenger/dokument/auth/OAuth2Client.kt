@@ -17,7 +17,7 @@ import no.nav.security.token.support.client.core.auth.ClientAssertion
 import no.nav.security.token.support.client.core.oauth2.OAuth2AccessTokenResponse
 import java.net.URI
 import java.nio.charset.StandardCharsets
-import java.util.*
+import java.util.Base64
 
 class OAuth2Client(
     private val httpClient: HttpClient,

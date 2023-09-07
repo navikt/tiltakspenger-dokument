@@ -38,3 +38,6 @@ spec:
         rules:
           - application: tiltakspenger-pdfgen
         external:
+  env:
+    - name: PDF_ENDPOINT_URL
+      value: {{ endpoints.pdf }}
