@@ -2,7 +2,7 @@ package no.nav.tiltakspenger.dokument.søknad
 
 import java.time.LocalDateTime
 
-data class SøknadResponse(
+data class JoarkResponse(
     val journalpostId: String,
     val innsendingTidspunkt: LocalDateTime,
 )

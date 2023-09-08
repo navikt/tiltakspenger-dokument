@@ -17,16 +17,16 @@ import no.nav.tiltakspenger.dokument.pdfgen.sjekkContentType
 
 val log = KotlinLogging.logger { }
 fun Route.søknadRoutes(søknadService: SøknadService) {
-    post("/hei") {
+    post("/soknad") {
         val (søknadDTO, vedlegg) = taInnSøknadSomMultipart(call.receiveMultipart())
         val journalpostId = søknadService.arkiverIJoark(søknadDTO, vedlegg, call.callId!!)
 
-        val søknadResponse = SøknadResponse(
+        val joarkResponse = JoarkResponse(
             journalpostId = journalpostId,
             innsendingTidspunkt = søknadDTO.innsendingTidspunkt,
         )
 
-        call.respond(status = HttpStatusCode.OK, message = søknadResponse)
+        call.respond(status = HttpStatusCode.OK, message = joarkResponse)
     }
 }
 
