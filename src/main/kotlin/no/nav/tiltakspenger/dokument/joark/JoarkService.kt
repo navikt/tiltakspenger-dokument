@@ -1,6 +1,6 @@
 package no.nav.tiltakspenger.soknad.api.joark
 
-import io.ktor.server.config.*
+import io.ktor.server.config.ApplicationConfig
 import no.nav.tiltakspenger.dokument.søknad.SøknadDTO
 import no.nav.tiltakspenger.dokument.søknad.Vedlegg
 
