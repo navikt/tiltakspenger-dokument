@@ -20,7 +20,6 @@ import no.nav.tiltakspenger.soknad.api.pdf.PdfServiceImpl
 
 fun main(args: Array<String>) {
     System.setProperty("logback.configurationFile", "egenLogback.xml")
-    System.setProperty("endpoints.pdf", "http://localhost:8081") // TODO: legg denne inn i environment variabler og få det til å funke
 
     val log = KotlinLogging.logger {}
     val securelog = KotlinLogging.logger("tjenestekall")
