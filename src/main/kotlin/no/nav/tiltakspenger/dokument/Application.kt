@@ -1,5 +1,9 @@
 package no.nav.tiltakspenger.dokument
 
+import com.fasterxml.jackson.databind.SerializationFeature
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
+import com.fasterxml.jackson.module.kotlin.KotlinModule
+import io.ktor.serialization.jackson.jackson
 import io.ktor.http.HttpHeaders
 import io.ktor.server.application.Application
 import io.ktor.server.application.ApplicationStarted
@@ -8,6 +12,7 @@ import io.ktor.server.application.install
 import io.ktor.server.plugins.callid.CallId
 import io.ktor.server.plugins.callid.callIdMdc
 import io.ktor.server.plugins.callloging.CallLogging
+import io.ktor.server.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.server.request.httpMethod
 import io.ktor.server.routing.routing
 import mu.KotlinLogging
@@ -48,6 +53,7 @@ fun Application.module() {
 
     val log = KotlinLogging.logger {}
     installCallLogging()
+    installContentNegoatiation()
     install(CallId) {
         retrieveFromHeader(HttpHeaders.XRequestId)
     }
@@ -75,6 +81,16 @@ internal fun Application.installCallLogging() {
             val req = call.request
             val userAgent = call.request.headers["User-Agent"]
             "Status: $status, HTTP method: $httpMethod, User agent: $userAgent req: $req"
+        }
+    }
+}
+
+internal fun Application.installContentNegoatiation() {
+    install(ContentNegotiation) {
+        jackson {
+            configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false)
+            registerModule(JavaTimeModule())
+            registerModule(KotlinModule.Builder().build())
         }
     }
 }
