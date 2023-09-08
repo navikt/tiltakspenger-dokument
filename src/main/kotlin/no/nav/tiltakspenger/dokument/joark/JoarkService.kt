@@ -11,12 +11,11 @@ class JoarkService(
     suspend fun sendPdfTilJoark(
         pdf: ByteArray,
         søknadDTO: SøknadDTO,
-        fnr: String,
         vedlegg: List<Vedlegg>,
         callId: String,
     ): String {
         val journalpost = Journalpost.Søknadspost.from(
-            fnr = fnr,
+            fnr = søknadDTO.personopplysninger.ident,
             søknadDTO = søknadDTO,
             pdf = pdf,
             vedlegg = vedlegg,

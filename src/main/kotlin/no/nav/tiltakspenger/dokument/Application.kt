@@ -1,9 +1,11 @@
 package no.nav.tiltakspenger.dokument
 
+import io.ktor.http.HttpHeaders
 import io.ktor.server.application.Application
 import io.ktor.server.application.ApplicationStarted
 import io.ktor.server.application.ApplicationStopped
 import io.ktor.server.application.install
+import io.ktor.server.plugins.callid.CallId
 import io.ktor.server.plugins.callid.callIdMdc
 import io.ktor.server.plugins.callloging.CallLogging
 import io.ktor.server.request.httpMethod
@@ -38,7 +40,7 @@ fun Application.module() {
     val pdfService = PdfServiceImpl(
         PdfClient(
             config = environment.config,
-            client = httpClientCIO(timeout = 10L),
+            client = httpClientCIO(timeout = 30L),
         ),
     )
     val søknadService = SøknadServiceImpl(pdfService, joarkService)
@@ -46,6 +48,9 @@ fun Application.module() {
 
     val log = KotlinLogging.logger {}
     installCallLogging()
+    install(CallId) {
+        retrieveFromHeader(HttpHeaders.XRequestId)
+    }
 
     routing {
         healthRoutes()
