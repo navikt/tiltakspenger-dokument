@@ -22,7 +22,7 @@ jobs:
           distribution: 'temurin'
           java-version: 17
 
-      - uses: gradle/gradle-build-action@v2
+      - uses: gradle/gradle-build-action@v2.4.2
         with:
           arguments: build --info installDist
 
@@ -71,7 +71,6 @@ jobs:
           RESOURCE: .nais/nais.yml
           VAR: image=${{ env.IMAGE }},name=${{ github.event.repository.name }}
           VARS: .nais/vars/dev.yml
-
 #  deploy-prod:
 #    name: Deploy to NAIS prod
 #    needs: deploy-dev
