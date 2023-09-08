@@ -1,4 +1,12 @@
 kafka:
   pool: nav-dev
+cluster: dev-gcp
 endpoints:
-  pdf: localhost:8081/api/v1/genpdf/tpts/soknad
+  pdf: http://tiltakspenger-pdfgen
+  joark: https://dokarkiv.dev-fss-pub.nais.io
+outboundExternalUrls:
+  dokarkiv: dokarkiv.dev-fss-pub.nais.io
+audience:
+  joark: dev-fss:teamdokumenthandtering:dokarkiv
+scope:
+  joark: api://dev-fss.teamdokumenthandtering.dokarkiv-q1/.default

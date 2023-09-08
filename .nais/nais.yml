@@ -39,5 +39,11 @@ spec:
           - application: tiltakspenger-pdfgen
         external:
   env:
+    - name: JOARK_ENDPOINT_URL
+      value: {{ endpoints.joark }}
+    - name: JOARK_AUDIENCE
+      value: {{ audience.joark }}
+    - name: JOARK_SCOPE
+      value: {{ scope.joark }}
     - name: PDF_ENDPOINT_URL
       value: {{ endpoints.pdf }}
