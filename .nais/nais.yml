@@ -26,16 +26,17 @@ spec:
     pool: {{ kafka.pool }}
   secureLogs:
     enabled: true
-    accessPolicy:
-      inbound:
-        rules:
-          - application: tiltakspenger-soknad-api
-            namespace: tpts
-            cluster: { { cluster } }
-      outbound:
-        rules:
-          - application: tiltakspenger-pdfgen
-        external:
+  accessPolicy:
+    inbound:
+      rules:
+        - application: tiltakspenger-soknad
+          namespace: tpts
+          cluster: {{ cluster }}
+    outbound:
+      rules:
+        - application: tiltakspenger-pdfgen
+      external:
+        - host: {{outboundExternalUrls.dokarkiv}}
   env:
     - name: JOARK_ENDPOINT_URL
       value: {{ endpoints.joark }}
