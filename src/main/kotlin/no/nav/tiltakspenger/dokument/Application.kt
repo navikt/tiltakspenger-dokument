@@ -9,6 +9,8 @@ import io.ktor.server.plugins.callloging.CallLogging
 import io.ktor.server.request.httpMethod
 import io.ktor.server.routing.routing
 import mu.KotlinLogging
+import no.nav.tiltakspenger.dokument.brev.BrevServiceImpl
+import no.nav.tiltakspenger.dokument.brev.brevRoutes
 import no.nav.tiltakspenger.dokument.health.healthRoutes
 import no.nav.tiltakspenger.dokument.pdfgen.PdfClient
 import no.nav.tiltakspenger.dokument.søknad.SøknadServiceImpl
@@ -47,6 +49,7 @@ fun Application.module() {
         ),
     )
     val søknadService = SøknadServiceImpl(pdfService, joarkService)
+    val brevService = BrevServiceImpl(pdfService, joarkService)
 
     val log = KotlinLogging.logger {}
     installCallLogging()
@@ -54,6 +57,7 @@ fun Application.module() {
     routing {
         healthRoutes()
         søknadRoutes(søknadService)
+        brevRoutes(brevService)
     }
 
     environment.monitor.subscribe(ApplicationStarted) {

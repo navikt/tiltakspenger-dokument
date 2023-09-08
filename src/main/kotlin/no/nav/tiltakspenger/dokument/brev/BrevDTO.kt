@@ -1,7 +1,7 @@
 package no.nav.tiltakspenger.domene.brev
 
 import java.time.LocalDateTime
-class BrevInnhold(
+class BrevDTO(
     val personalia: Personalia,
     val fraDato: String,
     val tilDato: String,
