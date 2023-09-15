@@ -19,7 +19,7 @@ import no.nav.tiltakspenger.dokument.objectMapper
 import org.slf4j.LoggerFactory
 
 internal const val joarkPath = "rest/journalpostapi/v1/journalpost"
-const val INDIVIDSTONAD = "IND"
+
 class JoarkClient(
     private val config: ApplicationConfig,
     private val client: HttpClient = httpClientWithRetry(timeout = 30L),
@@ -32,15 +32,16 @@ class JoarkClient(
     suspend fun opprettJournalpost(
         dokumentInnhold: Journalpost,
         callId: String,
+        forsoekFerdigstill: Boolean,
     ): String {
         try {
-            log.info("Starter journalføring av søknad")
+            log.info("Starter journalføring av dokument")
             val token = joarkCredentialsClient.getToken()
             val res = client.post("$joarkEndpoint/$joarkPath") {
                 accept(ContentType.Application.Json)
-                header("X-Correlation-ID", INDIVIDSTONAD) // Endre til noe mer fornuftig
+                header("X-Correlation-ID", "IND") // Endre til noe mer fornuftig
                 header("Nav-Callid", callId)
-                parameter("forsoekFerdigstill", false)
+                parameter("forsoekFerdigstill", forsoekFerdigstill)
                 bearerAuth(token)
                 contentType(ContentType.Application.Json)
                 setBody(
@@ -50,11 +51,10 @@ class JoarkClient(
                             journalpostType = dokumentInnhold.journalpostType,
                             tema = dokumentInnhold.tema,
                             kanal = dokumentInnhold.kanal,
-                            behandlingstema = dokumentInnhold.behandlingstema,
-                            // journalfoerendeEnhet = dokumentInnhold.journalfoerendeEnhet,
+                            journalfoerendeEnhet = dokumentInnhold.journalfoerendeEnhet,
                             avsenderMottaker = dokumentInnhold.avsenderMottaker,
                             bruker = dokumentInnhold.bruker,
-                            // sak = dokumentInnhold.sak,
+                            sak = dokumentInnhold.sak,
                             dokumenter = dokumentInnhold.dokumenter,
                             eksternReferanseId = callId,
                         ),

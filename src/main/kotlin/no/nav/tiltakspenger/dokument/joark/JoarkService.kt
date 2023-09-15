@@ -10,16 +10,16 @@ class JoarkService(
 ) {
     suspend fun sendPdfTilJoark(
         pdf: ByteArray,
-        søknadDTO: SøknadDTO,
+        dokumentJSON: SøknadDTO,
         vedlegg: List<Vedlegg>,
         callId: String,
     ): String {
         val journalpost = Journalpost.Søknadspost.from(
-            fnr = søknadDTO.personopplysninger.ident,
-            søknadDTO = søknadDTO,
+            fnr = dokumentJSON.personopplysninger.ident,
+            søknadDTO = dokumentJSON,
             pdf = pdf,
             vedlegg = vedlegg,
         )
-        return joarkClient.opprettJournalpost(journalpost, callId)
+        return joarkClient.opprettJournalpost(journalpost, callId, forsoekFerdigstill = false)
     }
 }

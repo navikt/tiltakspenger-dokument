@@ -17,6 +17,7 @@ import no.nav.tiltakspenger.dokument.pdfgen.Detect.IMAGE_PNG
 import no.nav.tiltakspenger.dokument.pdfgen.Detect.detect
 import no.nav.tiltakspenger.dokument.søknad.SøknadDTO
 import no.nav.tiltakspenger.dokument.søknad.Vedlegg
+import no.nav.tiltakspenger.domene.brev.BrevDTO
 import no.nav.tiltakspenger.soknad.api.pdf.PdfGenerator
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -25,6 +26,7 @@ import java.util.UUID
 internal const val pdfgenPath = "api/v1/genpdf/tpts"
 internal const val pdfgenImagePath = "api/v1/genpdf/image/tpts"
 internal const val SOKNAD_TEMPLATE = "soknad"
+internal const val BREV_TEMPLATE = "vedtakInnvilgelse"
 
 class PdfClient(
     config: ApplicationConfig,
@@ -41,6 +43,21 @@ class PdfClient(
                 header("X-Correlation-ID", UUID.randomUUID())
                 contentType(ContentType.Application.Json)
                 setBody(objectMapper.writeValueAsString(søknadDTO))
+            }.body()
+        } catch (throwable: Throwable) {
+            log.error("Kallet til pdfgen feilet $throwable")
+            throw RuntimeException("Kallet til pdfgen feilet $throwable")
+        }
+    }
+
+    override suspend fun genererBrevPdf(brevDTO: BrevDTO): ByteArray {
+        try {
+            log.info("Starter generering av vedtaksbrevpdf")
+            return client.post("$pdfEndpoint/$pdfgenPath/$BREV_TEMPLATE") {
+                accept(ContentType.Application.Json)
+                header("X-Correlation-ID", UUID.randomUUID())
+                contentType(ContentType.Application.Json)
+                setBody(objectMapper.writeValueAsString(brevDTO))
             }.body()
         } catch (throwable: Throwable) {
             log.error("Kallet til pdfgen feilet $throwable")

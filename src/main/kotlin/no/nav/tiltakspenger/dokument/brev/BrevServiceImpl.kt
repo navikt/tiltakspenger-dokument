@@ -8,7 +8,10 @@ class BrevServiceImpl(
     private val pdfService: PdfService,
     private val joarkService: JoarkService,
 ) : BrevService {
-    override suspend fun arkiverBrevIJoark(brev: BrevDTO, callId: String): String {
-        return "joarkID123"
+    override suspend fun arkiverBrevIJoark(brev: BrevDTO, callId: String): ByteArray {
+        val brevPDF = pdfService.lagBrevPdf(brev)
+        // val journalPostId = joarkService.sendPdfTilJoark(pdf = brevPDF, dokumentJSON = brev, callId = callId)
+        return brevPDF
+        // return "joarkID123"
     }
 }

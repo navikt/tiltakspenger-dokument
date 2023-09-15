@@ -9,17 +9,12 @@ enum class Tema(val value: String) {
     TILTAKSPENGER("IND"),
 }
 
-enum class Behandlingstema(val value: String) {
-    TILTAKSPENGER(""),
-}
-
 sealed class Journalpost {
     val tema: String = Tema.TILTAKSPENGER.value
-    val behandlingstema: String = Behandlingstema.TILTAKSPENGER.value
     abstract val journalfoerendeEnhet: String?
     abstract val tittel: String
     abstract val journalpostType: JournalPostType
-    abstract val kanal: String?
+    abstract val kanal: String
     abstract val avsenderMottaker: AvsenderMottaker
     abstract val bruker: Bruker
     abstract val sak: Sak?
@@ -29,17 +24,15 @@ sealed class Journalpost {
         val fnr: String,
         override val dokumenter: List<JournalpostDokument>,
     ) : Journalpost() {
-        override val tittel: String = SØKNADSPOSTTITTEL
+        override val tittel: String = "Søknad om tiltakspenger"
         override val avsenderMottaker: AvsenderMottaker = AvsenderMottaker(id = fnr)
         override val bruker: Bruker = Bruker(id = fnr)
         override val sak: Sak? = null
         override val journalpostType: JournalPostType = JournalPostType.INNGAAENDE
-        override val kanal: String = "NAV_NO"
+        override val kanal: String = Kanal.SOKNAD.value
         override val journalfoerendeEnhet: String? = null
 
         companion object {
-            private const val SØKNADSPOSTTITTEL = "Søknad om tiltakspenger" // TODO Sjekk at tittel er ok
-            private const val BREVKODE_FOR_SØKNAD = "NAV 76-13.45"
             fun from(
                 fnr: String,
                 søknadDTO: SøknadDTO,
@@ -52,22 +45,27 @@ sealed class Journalpost {
                         lagHoveddokument(
                             pdf = pdf,
                             søknadDTO = søknadDTO,
+                            tittel = "Søknad om tiltakspenger",
+                            brevkode = BrevKode.SOKNAD.value,
                         ),
                     ).apply {
                         this.addAll(lagVedleggsdokumenter(vedlegg))
                     },
                 )
 
-            private fun lagHoveddokument(pdf: ByteArray, søknadDTO: SøknadDTO): JournalpostDokument =
+            private fun lagHoveddokument(pdf: ByteArray, søknadDTO: SøknadDTO, tittel: String, brevkode: String): JournalpostDokument =
                 JournalpostDokument(
-                    tittel = SØKNADSPOSTTITTEL,
-                    // dokumentKategori = DokumentKategori.SOK,
-                    brevkode = BREVKODE_FOR_SØKNAD,
+                    tittel = tittel,
+                    brevkode = brevkode,
                     dokumentvarianter = listOf(
-                        DokumentVariant.ArkivPDF(fysiskDokument = Base64.getEncoder().encodeToString(pdf)),
+                        DokumentVariant.ArkivPDF(
+                            fysiskDokument = Base64.getEncoder().encodeToString(pdf),
+                            tittel = tittel,
+                        ),
                         DokumentVariant.OriginalJson(
                             fysiskDokument = Base64.getEncoder()
                                 .encodeToString(objectMapper.writeValueAsString(søknadDTO).toByteArray()),
+                            tittel = tittel,
                         ),
                     ),
                 )
@@ -93,12 +91,11 @@ internal data class JournalpostRequest(
     val tittel: String,
     val journalpostType: JournalPostType,
     val tema: String,
-    val kanal: String?,
-    val behandlingstema: String,
-    // val journalfoerendeEnhet: String,
+    val kanal: String,
+    val journalfoerendeEnhet: String?,
     val avsenderMottaker: AvsenderMottaker,
     val bruker: Bruker,
-    // val sak: Sak,
+    val sak: Sak?,
     val dokumenter: List<JournalpostDokument>,
     val eksternReferanseId: String,
 )
@@ -119,16 +116,11 @@ sealed class Sak {
         val fagsaksystem: String = "IND",
         val sakstype: String = "FAGSAK",
     ) : Sak()
-
-    data class GenerellSak(
-        val sakstype: String = "GENERELL_SAK",
-    ) : Sak()
 }
 
 data class JournalpostDokument(
     val tittel: String,
-    // val dokumentKategori: DokumentKategori,
-    val brevkode: String?,
+    val brevkode: String,
     val dokumentvarianter: List<DokumentVariant>,
 )
 
@@ -140,10 +132,11 @@ sealed class DokumentVariant {
 
     data class ArkivPDF(
         override val fysiskDokument: String,
+        val tittel: String,
     ) : DokumentVariant() {
         override val filtype: String = "PDFA"
         override val variantformat: String = "ARKIV"
-        override val filnavn: String = "tiltakspengersoknad.pdf"
+        override val filnavn: String = "$tittel.pdf"
     }
 
     data class VedleggPDF(
@@ -156,18 +149,31 @@ sealed class DokumentVariant {
 
     data class OriginalJson(
         override val fysiskDokument: String,
+        val tittel: String,
     ) : DokumentVariant() {
         override val filtype: String = "JSON"
         override val variantformat: String = "ORIGINAL"
-        override val filnavn: String = "tiltakspengersoknad.json"
+        override val filnavn: String = "$tittel.json"
     }
 }
 
-enum class JournalPostType(val type: String) {
+enum class JournalPostType(val value: String) {
     INNGAAENDE("INNGAAENDE"),
     UTGAAENDE("UTGAAENDE"),
 }
 
-enum class DokumentKategori(val type: String) {
-    SOK("SOK"),
+enum class BrevKode(val value: String) {
+    SOKNAD("NAV 76-13.45"),
+    BREV("NAV 76-13.04"), // TODO: Undersøke hvilken/hvilke brevkode(r) som brukes for vedtaksbrev
+    VEDLEGG("S1"),
+}
+
+enum class FilNavn(val value: String) {
+    SOKNAD("tiltakspengersoknad.json"),
+    BREV("vedtaksbrev.json"),
+}
+
+enum class Kanal(val value: String) {
+    SOKNAD("NAV_NO"),
+    BREV(""), // TODO: Finne riktig verdi for utsendingskanal på brev
 }
