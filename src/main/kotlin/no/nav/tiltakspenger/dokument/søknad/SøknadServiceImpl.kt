@@ -1,7 +1,6 @@
 package no.nav.tiltakspenger.dokument.søknad
 
-import io.ktor.http.content.MultiPartData
-import no.nav.tiltakspenger.soknad.api.joark.JoarkService
+import no.nav.tiltakspenger.dokument.joark.JoarkService
 import no.nav.tiltakspenger.soknad.api.pdf.PdfService
 
 class SøknadServiceImpl(
@@ -9,13 +8,9 @@ class SøknadServiceImpl(
     private val joarkService: JoarkService,
 ) : SøknadService {
     override suspend fun arkiverIJoark(søknad: SøknadDTO, vedlegg: List<Vedlegg>, callId: String): String {
-        val søknadPDF = pdfService.lagPdf(søknad)
+        val søknadPDF = pdfService.lagSøknadPdf(søknad)
         val vedleggSomPdfer = pdfService.konverterVedlegg(vedlegg)
 
-        return joarkService.sendPdfTilJoark(pdf = søknadPDF, søknadDTO = søknad, vedlegg = vedleggSomPdfer, callId = callId)
-    }
-
-    override suspend fun taInnSøknadSomMultipart(søknadSomMultipart: MultiPartData): Pair<SpørsmålsbesvarelserDTO, List<Vedlegg>> {
-        TODO("Not yet implemented")
+        return joarkService.sendSøknadPdfTilJoark(pdf = søknadPDF, søknadDTO = søknad, vedlegg = vedleggSomPdfer, callId = callId)
     }
 }

@@ -3,89 +3,110 @@ package no.nav.tiltakspenger.soknad.api.joark
 import no.nav.tiltakspenger.dokument.objectMapper
 import no.nav.tiltakspenger.dokument.søknad.SøknadDTO
 import no.nav.tiltakspenger.dokument.søknad.Vedlegg
+import no.nav.tiltakspenger.domene.brev.BrevDTO
 import java.util.Base64
 
-enum class Tema(val value: String) {
-    TILTAKSPENGER("IND"),
-}
-
-enum class Behandlingstema(val value: String) {
-    TILTAKSPENGER(""),
-}
-
 sealed class Journalpost {
-    val tema: String = Tema.TILTAKSPENGER.value
-    val behandlingstema: String = Behandlingstema.TILTAKSPENGER.value
-    abstract val journalfoerendeEnhet: String?
-    abstract val tittel: String
+    val tema: String = "IND"
     abstract val journalpostType: JournalPostType
-    abstract val kanal: String?
+    abstract val kanal: String
     abstract val avsenderMottaker: AvsenderMottaker
     abstract val bruker: Bruker
-    abstract val sak: Sak?
     abstract val dokumenter: List<JournalpostDokument>
+    abstract val tittel: String
+    abstract val journalfoerendeEnhet: String?
+    abstract val sak: Sak?
 
-    data class Søknadspost private constructor(
+    data class Brevpost(
         val fnr: String,
-        override val dokumenter: List<JournalpostDokument>,
+        val pdf: ByteArray,
+        val brevDTO: BrevDTO,
+        val saksId: String,
     ) : Journalpost() {
-        override val tittel: String = SØKNADSPOSTTITTEL
         override val avsenderMottaker: AvsenderMottaker = AvsenderMottaker(id = fnr)
         override val bruker: Bruker = Bruker(id = fnr)
-        override val sak: Sak? = null
+        override val journalpostType: JournalPostType = JournalPostType.UTGAAENDE
+        override val kanal: String = Kanal.BREV.value
+        override val tittel: String = DokumentTittel.BREV.value
+        override val journalfoerendeEnhet: String = "9999"
+        override val sak: Sak = Sak.Fagsak(saksId)
+        override val dokumenter = mutableListOf(
+            lagBrevdokument(
+                pdf = pdf,
+                brevDTO = brevDTO,
+            ),
+        )
+    }
+
+    data class Søknadspost(
+        val fnr: String,
+        val pdf: ByteArray,
+        val søknadDTO: SøknadDTO,
+        val vedlegg: List<Vedlegg>,
+    ) : Journalpost() {
+        override val avsenderMottaker: AvsenderMottaker = AvsenderMottaker(id = fnr)
+        override val bruker: Bruker = Bruker(id = fnr)
         override val journalpostType: JournalPostType = JournalPostType.INNGAAENDE
-        override val kanal: String = "NAV_NO"
+        override val kanal: String = Kanal.SOKNAD.value
+        override val tittel: String = DokumentTittel.BREV.value
         override val journalfoerendeEnhet: String? = null
+        override val sak: Sak? = null
+        override val dokumenter = mutableListOf(
+            lagSøknaddokument(
+                pdf = pdf,
+                søknadDTO = søknadDTO,
+            ),
+        ).apply {
+            this.addAll(lagVedleggsdokumenter(vedlegg))
+        }
+    }
+    companion object {
+        private fun lagBrevdokument(pdf: ByteArray, brevDTO: BrevDTO): JournalpostDokument =
+            JournalpostDokument(
+                tittel = DokumentTittel.BREV.value,
+                brevkode = BrevKode.BREV,
+                dokumentvarianter = listOf(
+                    DokumentVariant.ArkivPDF(
+                        fysiskDokument = Base64.getEncoder().encodeToString(pdf),
+                        tittel = DokumentTittel.BREV.value,
+                    ),
+                    DokumentVariant.OriginalJson(
+                        fysiskDokument = Base64.getEncoder()
+                            .encodeToString(objectMapper.writeValueAsString(brevDTO).toByteArray()),
+                        tittel = DokumentTittel.BREV.value,
+                    ),
+                ),
+            )
+        private fun lagSøknaddokument(pdf: ByteArray, søknadDTO: SøknadDTO): JournalpostDokument =
+            JournalpostDokument(
+                tittel = DokumentTittel.SOKNAD.value,
+                brevkode = BrevKode.SOKNAD,
+                dokumentvarianter = listOf(
+                    DokumentVariant.ArkivPDF(
+                        fysiskDokument = Base64.getEncoder().encodeToString(pdf),
+                        tittel = DokumentTittel.SOKNAD.value,
+                    ),
+                    DokumentVariant.OriginalJson(
+                        fysiskDokument = Base64.getEncoder()
+                            .encodeToString(objectMapper.writeValueAsString(søknadDTO).toByteArray()),
+                        tittel = DokumentTittel.SOKNAD.value,
+                    ),
+                ),
+            )
 
-        companion object {
-            private const val SØKNADSPOSTTITTEL = "Søknad om tiltakspenger" // TODO Sjekk at tittel er ok
-            private const val BREVKODE_FOR_SØKNAD = "NAV 76-13.45"
-            fun from(
-                fnr: String,
-                søknadDTO: SøknadDTO,
-                pdf: ByteArray,
-                vedlegg: List<Vedlegg>,
-            ) =
-                Søknadspost(
-                    fnr = fnr,
-                    dokumenter = mutableListOf(
-                        lagHoveddokument(
-                            pdf = pdf,
-                            søknadDTO = søknadDTO,
-                        ),
-                    ).apply {
-                        this.addAll(lagVedleggsdokumenter(vedlegg))
-                    },
-                )
-
-            private fun lagHoveddokument(pdf: ByteArray, søknadDTO: SøknadDTO): JournalpostDokument =
+        private fun lagVedleggsdokumenter(vedleggListe: List<Vedlegg>): List<JournalpostDokument> =
+            vedleggListe.map { vedlegg ->
                 JournalpostDokument(
-                    tittel = SØKNADSPOSTTITTEL,
-                    // dokumentKategori = DokumentKategori.SOK,
-                    brevkode = BREVKODE_FOR_SØKNAD,
+                    tittel = vedlegg.filnavn,
+                    brevkode = BrevKode.VEDLEGG,
                     dokumentvarianter = listOf(
-                        DokumentVariant.ArkivPDF(fysiskDokument = Base64.getEncoder().encodeToString(pdf)),
-                        DokumentVariant.OriginalJson(
-                            fysiskDokument = Base64.getEncoder()
-                                .encodeToString(objectMapper.writeValueAsString(søknadDTO).toByteArray()),
+                        DokumentVariant.VedleggPDF(
+                            fysiskDokument = Base64.getEncoder().encodeToString(vedlegg.dokument),
+                            filnavn = vedlegg.filnavn,
                         ),
                     ),
                 )
-
-            private fun lagVedleggsdokumenter(vedleggListe: List<Vedlegg>): List<JournalpostDokument> =
-                vedleggListe.map { vedlegg ->
-                    JournalpostDokument(
-                        tittel = vedlegg.filnavn,
-                        brevkode = vedlegg.brevkode,
-                        dokumentvarianter = listOf(
-                            DokumentVariant.VedleggPDF(
-                                fysiskDokument = Base64.getEncoder().encodeToString(vedlegg.dokument),
-                                filnavn = vedlegg.filnavn,
-                            ),
-                        ),
-                    )
-                }
-        }
+            }
     }
 }
 
@@ -93,12 +114,11 @@ internal data class JournalpostRequest(
     val tittel: String,
     val journalpostType: JournalPostType,
     val tema: String,
-    val kanal: String?,
-    val behandlingstema: String,
-    // val journalfoerendeEnhet: String,
+    val kanal: String,
+    val journalfoerendeEnhet: String?,
     val avsenderMottaker: AvsenderMottaker,
     val bruker: Bruker,
-    // val sak: Sak,
+    val sak: Sak?,
     val dokumenter: List<JournalpostDokument>,
     val eksternReferanseId: String,
 )
@@ -119,16 +139,11 @@ sealed class Sak {
         val fagsaksystem: String = "IND",
         val sakstype: String = "FAGSAK",
     ) : Sak()
-
-    data class GenerellSak(
-        val sakstype: String = "GENERELL_SAK",
-    ) : Sak()
 }
 
 data class JournalpostDokument(
     val tittel: String,
-    // val dokumentKategori: DokumentKategori,
-    val brevkode: String?,
+    val brevkode: BrevKode,
     val dokumentvarianter: List<DokumentVariant>,
 )
 
@@ -140,10 +155,11 @@ sealed class DokumentVariant {
 
     data class ArkivPDF(
         override val fysiskDokument: String,
+        val tittel: String,
     ) : DokumentVariant() {
         override val filtype: String = "PDFA"
         override val variantformat: String = "ARKIV"
-        override val filnavn: String = "tiltakspengersoknad.pdf"
+        override val filnavn: String = "$tittel.pdf"
     }
 
     data class VedleggPDF(
@@ -156,18 +172,36 @@ sealed class DokumentVariant {
 
     data class OriginalJson(
         override val fysiskDokument: String,
+        val tittel: String,
     ) : DokumentVariant() {
         override val filtype: String = "JSON"
         override val variantformat: String = "ORIGINAL"
-        override val filnavn: String = "tiltakspengersoknad.json"
+        override val filnavn: String = "$tittel.json"
     }
 }
 
-enum class JournalPostType(val type: String) {
+enum class JournalPostType(val value: String) {
     INNGAAENDE("INNGAAENDE"),
     UTGAAENDE("UTGAAENDE"),
 }
 
-enum class DokumentKategori(val type: String) {
-    SOK("SOK"),
+enum class DokumentTittel(val value: String) {
+    SOKNAD("Søknad om tiltakspenger"),
+    BREV("Vedtaksbrev for søknad om tiltakspenger"),
+}
+
+enum class BrevKode(val value: String) {
+    SOKNAD("NAV 76-13.45"),
+    BREV("NAV 76-13.04"), // TODO: Undersøke hvilken/hvilke brevkode(r) som brukes for vedtaksbrev
+    VEDLEGG("S1"),
+}
+
+enum class FilNavn(val value: String) {
+    SOKNAD("tiltakspengersoknad.json"),
+    BREV("vedtaksbrev.json"),
+}
+
+enum class Kanal(val value: String) {
+    SOKNAD("NAV_NO"),
+    BREV(""), // TODO: Finne riktig verdi for utsendingskanal på brev
 }
