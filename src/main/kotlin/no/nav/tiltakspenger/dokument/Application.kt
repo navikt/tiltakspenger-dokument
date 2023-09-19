@@ -22,7 +22,7 @@ import no.nav.tiltakspenger.dokument.health.healthRoutes
 import no.nav.tiltakspenger.dokument.pdfgen.PdfClient
 import no.nav.tiltakspenger.dokument.søknad.SøknadServiceImpl
 import no.nav.tiltakspenger.dokument.søknad.søknadRoutes
-import no.nav.tiltakspenger.soknad.api.joark.JoarkService
+import no.nav.tiltakspenger.soknad.api.joark.JoarkServiceImpl
 import no.nav.tiltakspenger.soknad.api.pdf.PdfServiceImpl
 
 fun main(args: Array<String>) {
@@ -41,7 +41,7 @@ fun main(args: Array<String>) {
 }
 
 fun Application.module() {
-    val joarkService = JoarkService(environment.config)
+    val joarkService = JoarkServiceImpl(environment.config)
     val pdfService = PdfServiceImpl(
         PdfClient(
             config = environment.config,

@@ -1,13 +1,14 @@
 package no.nav.tiltakspenger.dokument.brev
 
-import io.ktor.http.ContentType
+import io.ktor.http.HttpStatusCode
 import io.ktor.server.application.call
 import io.ktor.server.plugins.callid.callId
 import io.ktor.server.request.receive
-import io.ktor.server.response.respondBytes
+import io.ktor.server.response.respond
 import io.ktor.server.routing.Route
 import io.ktor.server.routing.post
 import mu.KotlinLogging
+import no.nav.tiltakspenger.dokument.søknad.JoarkResponse
 import no.nav.tiltakspenger.domene.brev.BrevDTO
 
 val log = KotlinLogging.logger { }
@@ -17,14 +18,11 @@ fun Route.brevRoutes(brevService: BrevService) {
 
         val journalpostId = brevService.arkiverBrevIJoark(brevDTO, call.callId!!)
 
-       /* val joarkResponse = JoarkResponse(
+        val joarkResponse = JoarkResponse(
             journalpostId = journalpostId,
             innsendingTidspunkt = brevDTO.innsendingTidspunkt,
-        )*/
-        call.respondBytes(
-            journalpostId,
-            contentType = ContentType.Application.Pdf,
         )
-        // call.respond(status = HttpStatusCode.OK, message = joarkResponse)
+
+        call.respond(status = HttpStatusCode.OK, message = joarkResponse)
     }
 }
