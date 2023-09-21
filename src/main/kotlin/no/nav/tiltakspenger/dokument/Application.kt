@@ -14,6 +14,7 @@ import io.ktor.server.plugins.callid.callIdMdc
 import io.ktor.server.plugins.callloging.CallLogging
 import io.ktor.server.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.server.request.httpMethod
+import io.ktor.server.request.path
 import io.ktor.server.routing.routing
 import mu.KotlinLogging
 import no.nav.tiltakspenger.dokument.brev.BrevServiceImpl
@@ -75,6 +76,12 @@ fun Application.module() {
 internal fun Application.installCallLogging() {
     install(CallLogging) {
         callIdMdc("call-id")
+        disableDefaultColors()
+        filter { call ->
+            !call.request.path().startsWith("/isalive") &&
+                !call.request.path().startsWith("/isready") &&
+                !call.request.path().startsWith("/metrics")
+        }
         format { call ->
             val status = call.response.status()
             val httpMethod = call.request.httpMethod.value
