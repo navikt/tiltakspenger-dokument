@@ -25,7 +25,7 @@ sealed class Journalpost {
     ) : Journalpost() {
         override val avsenderMottaker: AvsenderMottaker = AvsenderMottaker(id = fnr)
         override val bruker: Bruker = Bruker(id = fnr)
-        override val journalpostType: JournalPostType = JournalPostType.UTGAAENDE
+        override val journalpostType: JournalPostType = JournalPostType.INNGAAENDE
         override val kanal: String = Kanal.BREV.value
         override val tittel: String = DokumentTittel.BREV.value
         override val journalfoerendeEnhet: String = "9999"
