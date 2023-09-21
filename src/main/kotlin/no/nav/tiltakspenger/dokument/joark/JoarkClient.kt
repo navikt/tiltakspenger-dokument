@@ -65,6 +65,7 @@ class JoarkClient(
             when (res.status) {
                 HttpStatusCode.Created -> {
                     val response = res.call.body<JoarkResponse>()
+                    log.info(response.toString())
 
                     val journalpostId = if (response.journalpostId.isNullOrEmpty()) {
                         log.error("Kallet til Joark gikk ok, men vi fikk ingen journalpostId fra Joark")
@@ -105,6 +106,7 @@ class JoarkClient(
     data class JoarkResponse(
         val journalpostId: String?,
         val journalpostferdigstilt: Boolean?,
+        val melding: String?,
         val dokumenter: List<Dokumenter>?,
     )
 
