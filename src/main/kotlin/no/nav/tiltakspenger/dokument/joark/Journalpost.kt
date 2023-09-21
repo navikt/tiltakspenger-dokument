@@ -136,7 +136,7 @@ data class Bruker(
 sealed class Sak {
     data class Fagsak(
         val fagsakId: String,
-        val fagsaksystem: String = "IND",
+        val fagsaksystem: String = "AO01",
         val sakstype: String = "FAGSAK",
     ) : Sak()
 }
@@ -203,5 +203,5 @@ enum class FilNavn(val value: String) {
 
 enum class Kanal(val value: String) {
     SOKNAD("NAV_NO"),
-    BREV(""), // TODO: Finne riktig verdi for utsendingskanal på brev
+    BREV("NAV_NO"), // TODO: Finne riktig verdi for utsendingskanal på brev
 }
