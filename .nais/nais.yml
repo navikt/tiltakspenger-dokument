@@ -29,7 +29,7 @@ spec:
   accessPolicy:
     inbound:
       rules:
-        - application: tiltakspenger-soknad
+        - application: tiltakspenger-soknad-api
           namespace: tpts
           cluster: {{ cluster }}
     outbound:
