@@ -3,7 +3,6 @@ package no.nav.tiltakspenger.dokument
 import com.fasterxml.jackson.databind.SerializationFeature
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import com.fasterxml.jackson.module.kotlin.KotlinModule
-import io.ktor.http.HttpHeaders
 import io.ktor.serialization.jackson.jackson
 import io.ktor.server.application.Application
 import io.ktor.server.application.ApplicationStarted
@@ -25,6 +24,7 @@ import no.nav.tiltakspenger.dokument.søknad.SøknadServiceImpl
 import no.nav.tiltakspenger.dokument.søknad.søknadRoutes
 import no.nav.tiltakspenger.soknad.api.joark.JoarkServiceImpl
 import no.nav.tiltakspenger.soknad.api.pdf.PdfServiceImpl
+import java.util.UUID.randomUUID
 
 fun main(args: Array<String>) {
     System.setProperty("logback.configurationFile", "egenLogback.xml")
@@ -56,7 +56,7 @@ fun Application.module() {
     installCallLogging()
     installContentNegoatiation()
     install(CallId) {
-        retrieveFromHeader(HttpHeaders.XRequestId)
+        generate { randomUUID().toString() } // TODO: Sette opp tracing mellom apper
     }
 
     routing {
@@ -78,9 +78,9 @@ internal fun Application.installCallLogging() {
         callIdMdc("call-id")
         disableDefaultColors()
         filter { call ->
-            !call.request.path().startsWith("/isalive") &&
-                !call.request.path().startsWith("/isready") &&
-                !call.request.path().startsWith("/metrics")
+            !call.request.path().contains("/isalive") &&
+                !call.request.path().contains("/isready") &&
+                !call.request.path().contains("/metrics")
         }
         format { call ->
             val status = call.response.status()
