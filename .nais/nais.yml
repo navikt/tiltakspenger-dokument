@@ -5,6 +5,10 @@ metadata:
   namespace: tpts
   labels:
     team: tpts
+  annotations:
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "600"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "600"
+    nginx.ingress.kubernetes.io/proxy-body-size: "20m"
 spec:
   image: {{ image }}
   port: 8080
@@ -46,3 +50,8 @@ spec:
       value: {{ scope.joark }}
     - name: PDF_ENDPOINT_URL
       value: {{ endpoints.pdf }}
+  resources:
+    limits:
+      memory: 2048Mi
+    requests:
+      memory: 512Mi
