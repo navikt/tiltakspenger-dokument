@@ -1,2 +1,12 @@
 kafka:
   pool: nav-prod
+cluster: prod-gcp
+endpoints:
+  pdf: http://tiltakspenger-pdfgen
+  joark: https://dokarkiv.prod-fss-pub.nais.io
+outboundExternalUrls:
+  dokarkiv: dokarkiv.prod-fss-pub.nais.io
+audience:
+  joark: prod-fss:teamdokumenthandtering:dokarkiv
+scope:
+  joark: api://prod-fss.teamdokumenthandtering.dokarkiv/.default
