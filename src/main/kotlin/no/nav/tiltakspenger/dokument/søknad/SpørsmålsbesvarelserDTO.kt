@@ -172,6 +172,4 @@ data class SpørsmålsbesvarelserDTO(
     val jobbsjansen: Jobbsjansen,
     val harBekreftetAlleOpplysninger: Boolean,
     val harBekreftetÅSvareSåGodtManKan: Boolean,
-) {
-    // fun valider(): List<String> = valider(this)
-}
+)

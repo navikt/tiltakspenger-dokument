@@ -4,6 +4,8 @@ val mockkVersion = "1.13.7"
 val jacksonVersion = "2.15.2"
 val apacheCommonsTextVersion = "1.10.0"
 val tokenSupportVersion = "3.1.0"
+val kotestVersion = "5.6.1"
+val kotlinxCoroutinesVersion = "1.7.2"
 
 plugins {
     application
@@ -33,6 +35,7 @@ dependencies {
     implementation("io.ktor:ktor-server-core:$ktorVersion")
     implementation("io.ktor:ktor-serialization:$ktorVersion")
     implementation("io.ktor:ktor-serialization-jackson:$ktorVersion")
+    implementation("io.ktor:ktor-server-request-validation:$ktorVersion")
 
     // Potensiell Libs-mat
     implementation("org.apache.commons:commons-text:$apacheCommonsTextVersion")
@@ -69,6 +72,14 @@ dependencies {
     testImplementation("io.mockk:mockk:$mockkVersion")
     testImplementation("io.mockk:mockk-dsl-jvm:$mockkVersion")
     testImplementation("org.skyscreamer:jsonassert:1.5.1")
+    testImplementation("no.nav.security:mock-oauth2-server:0.5.10")
+    testImplementation("io.ktor:ktor-client-mock:$ktorVersion")
+    testImplementation("io.mockk:mockk:$mockkVersion")
+    testImplementation("io.mockk:mockk-dsl-jvm:$mockkVersion")
+    testImplementation("io.kotest:kotest-assertions-core:$kotestVersion")
+    testImplementation("io.kotest:kotest-assertions-json:$kotestVersion")
+    testImplementation("io.kotest:kotest-extensions:$kotestVersion")
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test-jvm:$kotlinxCoroutinesVersion")
 }
 
 configurations.all {
