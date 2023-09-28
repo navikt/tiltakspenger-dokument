@@ -25,7 +25,7 @@ sealed class Journalpost {
     ) : Journalpost() {
         override val avsenderMottaker: AvsenderMottaker = AvsenderMottaker(id = fnr)
         override val bruker: Bruker = Bruker(id = fnr)
-        override val journalpostType: JournalPostType = JournalPostType.INNGAAENDE
+        override val journalpostType: JournalPostType = JournalPostType.UTGAAENDE
         override val kanal: String = Kanal.BREV.value
         override val tittel: String = DokumentTittel.BREV.value
         override val journalfoerendeEnhet: String = "9999"
@@ -136,7 +136,7 @@ data class Bruker(
 sealed class Sak {
     data class Fagsak(
         val fagsakId: String,
-        val fagsaksystem: String = "AO01",
+        val fagsaksystem: String = "AO01", // Står nå som arena, men må endres når det kommer fra vårt system.
         val sakstype: String = "FAGSAK",
     ) : Sak()
 }

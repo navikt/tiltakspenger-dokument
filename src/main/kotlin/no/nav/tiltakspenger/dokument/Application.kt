@@ -46,7 +46,7 @@ fun Application.module() {
     val pdfService = PdfServiceImpl(
         PdfClient(
             config = environment.config,
-            client = httpClientCIO(timeout = 30L),
+            client = no.nav.tiltakspenger.dokument.httpClientCIO(timeout = 30L),
         ),
     )
     val søknadService = SøknadServiceImpl(pdfService, joarkService)
