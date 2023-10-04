@@ -52,6 +52,6 @@ spec:
       value: {{ endpoints.pdf }}
   resources:
     limits:
-      memory: 2048Mi
+      memory: 4096Mi
     requests:
-      memory: 512Mi
+      memory: 1024Mi
