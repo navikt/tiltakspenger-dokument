@@ -1,14 +1,14 @@
-val javaVersion = JavaVersion.VERSION_17
+val javaVersion = JavaVersion.VERSION_21
 val ktorVersion = "2.3.4"
-val mockkVersion = "1.13.7"
+val mockkVersion = "1.13.8"
 val jacksonVersion = "2.15.2"
 val apacheCommonsTextVersion = "1.10.0"
 val tokenSupportVersion = "3.1.5"
 
 plugins {
     application
-    kotlin("jvm") version "1.9.10"
-    id("ca.cutterslade.analyze") version "1.9.1"
+    kotlin("jvm") version "1.9.20"
+    // id("ca.cutterslade.analyze") version "1.9.1"
     id("com.diffplug.spotless") version "6.21.0"
 }
 
@@ -105,6 +105,7 @@ tasks {
         // https://phauer.com/2018/best-practices-unit-testing-kotlin/
         systemProperty("junit.jupiter.testinstance.lifecycle.default", "per_class")
     }
+    /*
     analyzeClassesDependencies {
         warnUsedUndeclared = true
         warnUnusedDeclared = true
@@ -113,4 +114,5 @@ tasks {
         warnUsedUndeclared = true
         warnUnusedDeclared = true
     }
+     */
 }
