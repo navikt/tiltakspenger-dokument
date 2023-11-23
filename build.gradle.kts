@@ -60,7 +60,7 @@ dependencies {
     implementation("org.apache.pdfbox:pdfbox:2.0.28")
 
     // Apache Tika
-    implementation("org.apache.tika:tika-core:2.8.0")
+    implementation("org.apache.tika:tika-core:2.9.1")
     implementation("io.ktor:ktor-server-call-logging-jvm:2.3.3")
     implementation("io.ktor:ktor-server-call-id-jvm:2.3.6")
 
