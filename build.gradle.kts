@@ -61,7 +61,7 @@ dependencies {
 
     // Apache Tika
     implementation("org.apache.tika:tika-core:2.9.1")
-    implementation("io.ktor:ktor-server-call-logging-jvm:2.3.3")
+    implementation("io.ktor:ktor-server-call-logging-jvm:2.3.6")
     implementation("io.ktor:ktor-server-call-id-jvm:2.3.6")
 
     testImplementation(platform("org.junit:junit-bom:5.10.0"))
