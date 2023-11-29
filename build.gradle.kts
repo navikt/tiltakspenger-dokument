@@ -66,7 +66,7 @@ dependencies {
     implementation("io.ktor:ktor-server-call-logging-jvm:2.3.6")
     implementation("io.ktor:ktor-server-call-id-jvm:2.3.6")
 
-    testImplementation(platform("org.junit:junit-bom:5.10.0"))
+    testImplementation(platform("org.junit:junit-bom:5.10.1"))
     testImplementation("org.junit.jupiter:junit-jupiter")
     testImplementation("io.mockk:mockk:$mockkVersion")
     testImplementation("io.mockk:mockk-dsl-jvm:$mockkVersion")
