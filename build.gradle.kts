@@ -3,7 +3,7 @@ val ktorVersion = "2.3.6"
 val mockkVersion = "1.13.8"
 val jacksonVersion = "2.16.0"
 val apacheCommonsTextVersion = "1.10.0"
-val tokenSupportVersion = "3.1.5"
+val tokenSupportVersion = "3.2.0"
 
 plugins {
     application
