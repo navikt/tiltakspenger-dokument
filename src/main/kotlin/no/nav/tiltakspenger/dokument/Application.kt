@@ -22,6 +22,7 @@ import no.nav.tiltakspenger.dokument.health.healthRoutes
 import no.nav.tiltakspenger.dokument.pdfgen.PdfClient
 import no.nav.tiltakspenger.dokument.søknad.SøknadServiceImpl
 import no.nav.tiltakspenger.dokument.søknad.søknadRoutes
+import no.nav.tiltakspenger.dokument.vedtak.vedtakRoutes
 import no.nav.tiltakspenger.soknad.api.joark.JoarkServiceImpl
 import no.nav.tiltakspenger.soknad.api.pdf.PdfServiceImpl
 import java.util.UUID.randomUUID
@@ -51,7 +52,6 @@ fun Application.module() {
     )
     val søknadService = SøknadServiceImpl(pdfService, joarkService)
     val brevService = BrevServiceImpl(pdfService, joarkService)
-
     val log = KotlinLogging.logger {}
     installCallLogging()
     installContentNegoatiation()
@@ -63,6 +63,7 @@ fun Application.module() {
         healthRoutes()
         søknadRoutes(søknadService)
         brevRoutes(brevService)
+        vedtakRoutes()
     }
 
     environment.monitor.subscribe(ApplicationStarted) {
