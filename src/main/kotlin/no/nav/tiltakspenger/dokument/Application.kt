@@ -28,7 +28,10 @@ import no.nav.tiltakspenger.soknad.api.pdf.PdfServiceImpl
 import java.util.UUID.randomUUID
 
 fun main(args: Array<String>) {
-    System.setProperty("logback.configurationFile", "egenLogback.xml")
+    val logback = with(System.getenv("NAIS_CLUSTER_NAME")) {
+        if (this == null || this == "compose") "logback.local.xml" else "logback.xml"
+    }
+    System.setProperty("logback.configurationFile", logback)
 
     val log = KotlinLogging.logger {}
     val securelog = KotlinLogging.logger("tjenestekall")
