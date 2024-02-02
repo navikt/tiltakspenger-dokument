@@ -35,6 +35,9 @@ spec:
         - application: tiltakspenger-soknad-api
           namespace: tpts
           cluster: {{ cluster }}
+        - application: tiltakspenger-vedtak-rivers
+          namespace: tpts
+          cluster: {{ cluster }}
     outbound:
       rules:
         - application: tiltakspenger-pdfgen
