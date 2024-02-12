@@ -1,10 +1,9 @@
-package no.nav.tiltakspenger.soknad.api.joark
+package no.nav.tiltakspenger.dokument.joark
 
 import io.ktor.server.config.ApplicationConfig
-import no.nav.tiltakspenger.dokument.joark.JoarkService
+import no.nav.tiltakspenger.dokument.brev.BrevDTO
 import no.nav.tiltakspenger.dokument.søknad.SøknadDTO
 import no.nav.tiltakspenger.dokument.søknad.Vedlegg
-import no.nav.tiltakspenger.domene.brev.BrevDTO
 
 class JoarkServiceImpl(
     applicationConfig: ApplicationConfig,

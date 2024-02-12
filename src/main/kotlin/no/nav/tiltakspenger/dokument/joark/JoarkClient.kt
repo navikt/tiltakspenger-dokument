@@ -1,4 +1,4 @@
-package no.nav.tiltakspenger.soknad.api.joark
+package no.nav.tiltakspenger.dokument.joark
 
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
@@ -14,7 +14,6 @@ import io.ktor.http.HttpStatusCode
 import io.ktor.http.contentType
 import io.ktor.server.config.ApplicationConfig
 import no.nav.tiltakspenger.dokument.httpClientWithRetry
-import no.nav.tiltakspenger.dokument.joark.JoarkCredentialsClient
 import no.nav.tiltakspenger.dokument.objectMapper
 import org.slf4j.LoggerFactory
 

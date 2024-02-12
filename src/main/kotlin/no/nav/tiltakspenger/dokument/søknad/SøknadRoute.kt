@@ -13,6 +13,7 @@ import io.ktor.server.routing.Route
 import io.ktor.server.routing.post
 import mu.KotlinLogging
 import no.nav.tiltakspenger.dokument.deserialize
+import no.nav.tiltakspenger.dokument.joark.JoarkResponse
 import no.nav.tiltakspenger.dokument.pdfgen.sjekkContentType
 
 val log = KotlinLogging.logger { }

@@ -1,4 +1,4 @@
-package no.nav.tiltakspenger.domene.brev
+package no.nav.tiltakspenger.dokument.brev
 
 import java.time.LocalDateTime
 class BrevDTO(
