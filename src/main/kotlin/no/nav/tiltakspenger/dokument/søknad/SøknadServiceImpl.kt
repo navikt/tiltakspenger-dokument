@@ -1,7 +1,7 @@
 package no.nav.tiltakspenger.dokument.søknad
 
 import no.nav.tiltakspenger.dokument.joark.JoarkService
-import no.nav.tiltakspenger.soknad.api.pdf.PdfService
+import no.nav.tiltakspenger.dokument.pdfgen.PdfService
 
 class SøknadServiceImpl(
     private val pdfService: PdfService,

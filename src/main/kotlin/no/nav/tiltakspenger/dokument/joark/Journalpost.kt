@@ -1,9 +1,9 @@
-package no.nav.tiltakspenger.soknad.api.joark
+package no.nav.tiltakspenger.dokument.joark
 
+import no.nav.tiltakspenger.dokument.brev.BrevDTO
 import no.nav.tiltakspenger.dokument.objectMapper
 import no.nav.tiltakspenger.dokument.søknad.SøknadDTO
 import no.nav.tiltakspenger.dokument.søknad.Vedlegg
-import no.nav.tiltakspenger.domene.brev.BrevDTO
 import java.util.Base64
 
 sealed class Journalpost {

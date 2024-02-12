@@ -8,8 +8,7 @@ import io.ktor.server.response.respond
 import io.ktor.server.routing.Route
 import io.ktor.server.routing.post
 import mu.KotlinLogging
-import no.nav.tiltakspenger.dokument.søknad.JoarkResponse
-import no.nav.tiltakspenger.domene.brev.BrevDTO
+import no.nav.tiltakspenger.dokument.joark.JoarkResponse
 
 val log = KotlinLogging.logger { }
 fun Route.brevRoutes(brevService: BrevService) {
@@ -17,12 +16,15 @@ fun Route.brevRoutes(brevService: BrevService) {
         val brevDTO = call.receive<BrevDTO>()
 
         val journalpostId = brevService.arkiverBrevIJoark(brevDTO, call.callId!!)
+        val bestillingId = brevService.distribuerJournalpost(journalpostId, call.callId!!)
 
-        val joarkResponse = JoarkResponse(
-            journalpostId = journalpostId,
-            innsendingTidspunkt = brevDTO.innsendingTidspunkt,
+        val brevResponse = BrevResponse(
+            joarkResponse = JoarkResponse(
+                journalpostId = journalpostId,
+                innsendingTidspunkt = brevDTO.innsendingTidspunkt,
+            ),
+            bestillingId = bestillingId,
         )
-
-        call.respond(status = HttpStatusCode.OK, message = joarkResponse)
+        call.respond(status = HttpStatusCode.OK, message = brevResponse)
     }
 }

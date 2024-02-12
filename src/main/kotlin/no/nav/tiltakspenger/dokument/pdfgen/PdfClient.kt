@@ -10,6 +10,7 @@ import io.ktor.http.ContentType
 import io.ktor.http.content.ByteArrayContent
 import io.ktor.http.contentType
 import io.ktor.server.config.ApplicationConfig
+import no.nav.tiltakspenger.dokument.brev.BrevDTO
 import no.nav.tiltakspenger.dokument.objectMapper
 import no.nav.tiltakspenger.dokument.pdfgen.Detect.APPLICATON_PDF
 import no.nav.tiltakspenger.dokument.pdfgen.Detect.IMAGE_JPEG
@@ -17,8 +18,6 @@ import no.nav.tiltakspenger.dokument.pdfgen.Detect.IMAGE_PNG
 import no.nav.tiltakspenger.dokument.pdfgen.Detect.detect
 import no.nav.tiltakspenger.dokument.søknad.SøknadDTO
 import no.nav.tiltakspenger.dokument.søknad.Vedlegg
-import no.nav.tiltakspenger.domene.brev.BrevDTO
-import no.nav.tiltakspenger.soknad.api.pdf.PdfGenerator
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import java.util.UUID

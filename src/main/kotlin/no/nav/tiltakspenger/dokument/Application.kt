@@ -18,13 +18,14 @@ import io.ktor.server.routing.routing
 import mu.KotlinLogging
 import no.nav.tiltakspenger.dokument.brev.BrevServiceImpl
 import no.nav.tiltakspenger.dokument.brev.brevRoutes
+import no.nav.tiltakspenger.dokument.dokdist.DokdistServiceImpl
 import no.nav.tiltakspenger.dokument.health.healthRoutes
+import no.nav.tiltakspenger.dokument.joark.JoarkServiceImpl
 import no.nav.tiltakspenger.dokument.pdfgen.PdfClient
+import no.nav.tiltakspenger.dokument.pdfgen.PdfServiceImpl
 import no.nav.tiltakspenger.dokument.søknad.SøknadServiceImpl
 import no.nav.tiltakspenger.dokument.søknad.søknadRoutes
 import no.nav.tiltakspenger.dokument.vedtak.vedtakRoutes
-import no.nav.tiltakspenger.soknad.api.joark.JoarkServiceImpl
-import no.nav.tiltakspenger.soknad.api.pdf.PdfServiceImpl
 import java.util.UUID.randomUUID
 
 fun main(args: Array<String>) {
@@ -53,8 +54,9 @@ fun Application.module() {
             client = httpClientCIO(timeout = 30L),
         ),
     )
+    val dokdistService = DokdistServiceImpl(environment.config)
     val søknadService = SøknadServiceImpl(pdfService, joarkService)
-    val brevService = BrevServiceImpl(pdfService, joarkService)
+    val brevService = BrevServiceImpl(pdfService, joarkService, dokdistService)
     val log = KotlinLogging.logger {}
     installCallLogging()
     installContentNegoatiation()

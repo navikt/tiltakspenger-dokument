@@ -1,4 +1,4 @@
-package no.nav.tiltakspenger.dokument.søknad
+package no.nav.tiltakspenger.dokument.joark
 
 import java.time.LocalDateTime
 

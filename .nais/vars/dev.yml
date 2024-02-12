@@ -4,9 +4,12 @@ cluster: dev-gcp
 endpoints:
   pdf: http://tiltakspenger-pdfgen
   joark: https://dokarkiv.dev-fss-pub.nais.io
+  dokdist: https://dokdistfordeling.dev-fss-pub.nais.io
 outboundExternalUrls:
   dokarkiv: dokarkiv.dev-fss-pub.nais.io
+  dokdist: dokdistfordeling.dev-fss-pub.nais.io
 audience:
   joark: dev-fss:teamdokumenthandtering:dokarkiv
 scope:
   joark: api://dev-fss.teamdokumenthandtering.dokarkiv-q1/.default
+  dokdist: api://dev-fss.teamdokumenthandtering.saf-q1/.default
