@@ -9,11 +9,10 @@ class DokdistServiceImpl(
     override suspend fun distribuerJournalpost(journalpostId: String, callId: String): String {
         val dokdistDTO = DokdistDTO(
             journalpost = journalpostId,
-            batchId = "",
             bestillendeFagsystem = "IND",
-            dokumentProdApp = "tiltakspenger-vedtak",
+            dokumentProdApp = "tiltakspenger-dokument",
             distribusjonstype = DistribusjonsType.VEDTAK,
-            distrubusjonstidspunkt = Distribusjonstidspunkt.UMIDDELBART,
+            distrubusjonstidspunkt = Distribusjonstidspunkt.KJERNETID,
         )
         return dokdistClient.distribuerJournalpost(dokdistDTO, callId)
     }
