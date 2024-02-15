@@ -21,6 +21,8 @@ import no.nav.tiltakspenger.dokument.brev.brevRoutes
 import no.nav.tiltakspenger.dokument.dokdist.DokdistServiceImpl
 import no.nav.tiltakspenger.dokument.health.healthRoutes
 import no.nav.tiltakspenger.dokument.joark.JoarkServiceImpl
+import no.nav.tiltakspenger.dokument.meldekort.MeldekortServiceImpl
+import no.nav.tiltakspenger.dokument.meldekort.meldekortRoutes
 import no.nav.tiltakspenger.dokument.pdfgen.PdfClient
 import no.nav.tiltakspenger.dokument.pdfgen.PdfServiceImpl
 import no.nav.tiltakspenger.dokument.søknad.SøknadServiceImpl
@@ -57,6 +59,7 @@ fun Application.module() {
     val dokdistService = DokdistServiceImpl(environment.config)
     val søknadService = SøknadServiceImpl(pdfService, joarkService)
     val brevService = BrevServiceImpl(pdfService, joarkService, dokdistService)
+    val meldekortService = MeldekortServiceImpl(joarkService)
     val log = KotlinLogging.logger {}
     installCallLogging()
     installContentNegoatiation()
@@ -68,6 +71,7 @@ fun Application.module() {
         healthRoutes()
         søknadRoutes(søknadService)
         brevRoutes(brevService)
+        meldekortRoutes(meldekortService)
         vedtakRoutes()
     }
 

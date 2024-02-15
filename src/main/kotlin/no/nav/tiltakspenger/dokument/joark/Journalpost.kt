@@ -1,6 +1,7 @@
 package no.nav.tiltakspenger.dokument.joark
 
 import no.nav.tiltakspenger.dokument.brev.BrevDTO
+import no.nav.tiltakspenger.dokument.meldekort.MeldekortDTO
 import no.nav.tiltakspenger.dokument.objectMapper
 import no.nav.tiltakspenger.dokument.søknad.SøknadDTO
 import no.nav.tiltakspenger.dokument.søknad.Vedlegg
@@ -60,6 +61,26 @@ sealed class Journalpost {
             this.addAll(lagVedleggsdokumenter(vedlegg))
         }
     }
+
+    data class Meldekortpost(
+        val fnr: String,
+        val meldekortDTO: MeldekortDTO,
+        val saksId: String,
+    ) : Journalpost() {
+        override val avsenderMottaker: AvsenderMottaker = AvsenderMottaker(id = fnr)
+        override val bruker: Bruker = Bruker(id = fnr)
+        override val journalpostType: JournalPostType = JournalPostType.INNGAAENDE
+        override val kanal: String = Kanal.MELDEKORT.value
+        override val tittel: String = DokumentTittel.MELDEKORT.value
+        override val journalfoerendeEnhet: String = "9999"
+        override val sak: Sak = Sak.Fagsak(saksId)
+        override val dokumenter = mutableListOf(
+            lagMeldekortDokument(
+                meldekortDTO = meldekortDTO,
+            ),
+        )
+    }
+
     companion object {
         private fun lagBrevdokument(pdf: ByteArray, brevDTO: BrevDTO): JournalpostDokument =
             JournalpostDokument(
@@ -77,6 +98,20 @@ sealed class Journalpost {
                     ),
                 ),
             )
+
+        private fun lagMeldekortDokument(meldekortDTO: MeldekortDTO): JournalpostDokument =
+            JournalpostDokument(
+                tittel = DokumentTittel.MELDEKORT.value,
+                brevkode = BrevKode.MELDEKORT,
+                dokumentvarianter = listOf(
+                    DokumentVariant.OriginalJson(
+                        fysiskDokument = Base64.getEncoder()
+                            .encodeToString(objectMapper.writeValueAsString(meldekortDTO).toByteArray()),
+                        tittel = DokumentTittel.MELDEKORT.value,
+                    ),
+                ),
+            )
+
         private fun lagSøknaddokument(pdf: ByteArray, søknadDTO: SøknadDTO): JournalpostDokument =
             JournalpostDokument(
                 tittel = DokumentTittel.SOKNAD.value,
@@ -188,20 +223,24 @@ enum class JournalPostType(val value: String) {
 enum class DokumentTittel(val value: String) {
     SOKNAD("Søknad om tiltakspenger"),
     BREV("Vedtaksbrev for søknad om tiltakspenger"),
+    MELDEKORT("Meldekort for tiltakspenger"),
 }
 
 enum class BrevKode(val value: String) {
     SOKNAD("NAV 76-13.45"),
     BREV("NAV 76-13.04"), // TODO: Undersøke hvilken/hvilke brevkode(r) som brukes for vedtaksbrev
+    MELDEKORT("TP-MELDEKORT"),
     VEDLEGG("S1"),
 }
 
 enum class FilNavn(val value: String) {
     SOKNAD("tiltakspengersoknad.json"),
     BREV("vedtaksbrev.json"),
+    MELDEKORT("meldekort.json"),
 }
 
 enum class Kanal(val value: String) {
     SOKNAD("NAV_NO"),
     BREV("NAV_NO"), // TODO: Finne riktig verdi for utsendingskanal på brev
+    MELDEKORT("INNSENDT_NAV_ANSATT"), // TODO: Bekreft om denne er riktig kanal med fag https://confluence.adeo.no/display/BOA/Mottakskanal
 }
