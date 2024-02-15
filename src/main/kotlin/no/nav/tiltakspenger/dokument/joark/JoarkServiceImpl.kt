@@ -2,6 +2,7 @@ package no.nav.tiltakspenger.dokument.joark
 
 import io.ktor.server.config.ApplicationConfig
 import no.nav.tiltakspenger.dokument.brev.BrevDTO
+import no.nav.tiltakspenger.dokument.meldekort.MeldekortDTO
 import no.nav.tiltakspenger.dokument.søknad.SøknadDTO
 import no.nav.tiltakspenger.dokument.søknad.Vedlegg
 
@@ -33,5 +34,14 @@ class JoarkServiceImpl(
             saksId = brevDTO.saksnummer,
         )
         return joarkClient.opprettJournalpost(journalpost, callId, forsoekFerdigstill = true)
+    }
+
+    override suspend fun sendMeldekortJsonTilJoark(meldekortDTO: MeldekortDTO, callId: String): String {
+        val journalpost = Journalpost.Meldekortpost(
+            fnr = meldekortDTO.personopplysninger.ident,
+            meldekortDTO = meldekortDTO,
+            saksId = meldekortDTO.sakId,
+        )
+        return joarkClient.opprettJournalpost(journalpost, callId, forsoekFerdigstill = false)
     }
 }
