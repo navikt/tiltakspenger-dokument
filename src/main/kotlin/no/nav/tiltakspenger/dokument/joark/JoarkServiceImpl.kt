@@ -42,6 +42,6 @@ class JoarkServiceImpl(
             meldekortDTO = meldekortDTO,
             saksId = meldekortDTO.sakId,
         )
-        return joarkClient.opprettJournalpost(journalpost, callId, forsoekFerdigstill = false)
+        return joarkClient.opprettJournalpost(journalpost, callId, forsoekFerdigstill = true)
     }
 }

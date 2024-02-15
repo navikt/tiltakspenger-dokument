@@ -229,20 +229,18 @@ enum class DokumentTittel(val value: String) {
 enum class BrevKode(val value: String) {
     SOKNAD("NAV 76-13.45"),
     BREV("NAV 76-13.04"), // TODO: Undersøke hvilken/hvilke brevkode(r) som brukes for vedtaksbrev
-    MELDEKORT("TP-MELDEKORT"), // brevkode er en kode som sier noe om dokumentets innhold og oppbygning. Brevkode bør settes for alle journalposttyper, og brukes blant annet for statistikk.
-
-    // For inngående dokumenter kan brevkoden for eksempel være en NAV-skjemaID f.eks. "NAV 14-05.09" eller en SED-id.
+    MELDEKORT("TP-MELDEKORT"),
     VEDLEGG("S1"),
 }
 
 enum class FilNavn(val value: String) {
     SOKNAD("tiltakspengersoknad.json"),
     BREV("vedtaksbrev.json"),
-    MELDEKORT("meldekortbrev.json"),
+    MELDEKORT("meldekort.json"),
 }
 
 enum class Kanal(val value: String) {
     SOKNAD("NAV_NO"),
     BREV("NAV_NO"), // TODO: Finne riktig verdi for utsendingskanal på brev
-    MELDEKORT("INNSENDT_NAV_ANSATT"), // TODO: Bekreft om denne er riktig kanal https://confluence.adeo.no/display/BOA/Mottakskanal
+    MELDEKORT("INNSENDT_NAV_ANSATT"), // TODO: Bekreft om denne er riktig kanal med fag https://confluence.adeo.no/display/BOA/Mottakskanal
 }
