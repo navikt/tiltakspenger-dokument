@@ -37,7 +37,7 @@ spec:
           cluster: {{ cluster }}
         - application: tiltakspenger-meldekort-api
           namespace: tpts
-          cluster: { { cluster } }
+          cluster: {{ cluster }}
         - application: tiltakspenger-vedtak-rivers
           namespace: tpts
           cluster: {{ cluster }}
@@ -56,7 +56,7 @@ spec:
     - name: PDF_ENDPOINT_URL
       value: {{ endpoints.pdf }}
     - name: DOKDIST_SCOPE
-      value: { { scope.dokdist } }
+      value: {{ scope.dokdist }}
   resources:
     limits:
       memory: 4096Mi
