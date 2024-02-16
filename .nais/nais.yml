@@ -57,6 +57,8 @@ spec:
       value: {{ endpoints.pdf }}
     - name: DOKDIST_SCOPE
       value: {{ scope.dokdist }}
+    - name: DOKDIST_ENDPOINT_URL
+      value: {{ endpoints.dokdist }}
   resources:
     limits:
       memory: 4096Mi
