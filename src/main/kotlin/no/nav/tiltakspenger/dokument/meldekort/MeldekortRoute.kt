@@ -12,7 +12,7 @@ import no.nav.tiltakspenger.dokument.joark.JoarkResponse
 
 val log = KotlinLogging.logger { }
 fun Route.meldekortRoutes(meldekortService: MeldekortService) {
-    post("/arkivMeldekort") {
+    post("/meldekort/arkivmeldekort") {
         log.info { "Mottatt meldekort" }
         val meldekortDTO = call.receive<DokumentMeldekortDTO>()
         log.info { "Vi skjønte meldekortet" }
