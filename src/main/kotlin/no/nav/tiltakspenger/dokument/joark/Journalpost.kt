@@ -1,7 +1,7 @@
 package no.nav.tiltakspenger.dokument.joark
 
 import no.nav.tiltakspenger.dokument.brev.BrevDTO
-import no.nav.tiltakspenger.dokument.meldekort.MeldekortDTO
+import no.nav.tiltakspenger.dokument.meldekort.DokumentMeldekortDTO
 import no.nav.tiltakspenger.dokument.objectMapper
 import no.nav.tiltakspenger.dokument.søknad.SøknadDTO
 import no.nav.tiltakspenger.dokument.søknad.Vedlegg
@@ -64,7 +64,7 @@ sealed class Journalpost {
 
     data class Meldekortpost(
         val fnr: String,
-        val meldekortDTO: MeldekortDTO,
+        val meldekortDTO: DokumentMeldekortDTO,
         val saksId: String,
     ) : Journalpost() {
         override val avsenderMottaker: AvsenderMottaker = AvsenderMottaker(id = fnr)
@@ -99,7 +99,7 @@ sealed class Journalpost {
                 ),
             )
 
-        private fun lagMeldekortDokument(meldekortDTO: MeldekortDTO): JournalpostDokument =
+        private fun lagMeldekortDokument(meldekortDTO: DokumentMeldekortDTO): JournalpostDokument =
             JournalpostDokument(
                 tittel = DokumentTittel.MELDEKORT.value,
                 brevkode = BrevKode.MELDEKORT,

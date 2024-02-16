@@ -13,7 +13,9 @@ import no.nav.tiltakspenger.dokument.joark.JoarkResponse
 val log = KotlinLogging.logger { }
 fun Route.meldekortRoutes(meldekortService: MeldekortService) {
     post("/arkivMeldekort") {
-        val meldekortDTO = call.receive<MeldekortDTO>()
+        log.info { "Mottatt meldekort" }
+        val meldekortDTO = call.receive<DokumentMeldekortDTO>()
+        log.info { "Vi skjønte meldekortet" }
 
         val journalpostId = meldekortService.arkivMeldekortIJoark(meldekortDTO, call.callId!!)
 
@@ -22,6 +24,7 @@ fun Route.meldekortRoutes(meldekortService: MeldekortService) {
             innsendingTidspunkt = meldekortDTO.innsendingTidspunkt,
         )
 
+        log.info { "Det gikk : $joarkResponse" }
         call.respond(status = HttpStatusCode.OK, message = joarkResponse)
     }
 }
