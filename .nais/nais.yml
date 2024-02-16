@@ -55,6 +55,8 @@ spec:
       value: {{ scope.joark }}
     - name: PDF_ENDPOINT_URL
       value: {{ endpoints.pdf }}
+    - name: DOKDIST_SCOPE
+      value: { { scope.dokdist } }
   resources:
     limits:
       memory: 4096Mi
