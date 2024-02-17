@@ -35,22 +35,6 @@ class JoarkClient(
     ): String {
         try {
             log.info("Starter journalføring av dokument")
-            log.info(
-                objectMapper.writeValueAsString(
-                    JournalpostRequest(
-                        tittel = dokumentInnhold.tittel,
-                        journalpostType = dokumentInnhold.journalpostType,
-                        tema = dokumentInnhold.tema,
-                        kanal = dokumentInnhold.kanal,
-                        journalfoerendeEnhet = dokumentInnhold.journalfoerendeEnhet,
-                        avsenderMottaker = dokumentInnhold.avsenderMottaker,
-                        bruker = dokumentInnhold.bruker,
-                        sak = dokumentInnhold.sak,
-                        dokumenter = dokumentInnhold.dokumenter,
-                        eksternReferanseId = callId,
-                    ),
-                ),
-            )
             val token = joarkCredentialsClient.getToken()
             val res = client.post("$joarkEndpoint/$joarkPath") {
                 accept(ContentType.Application.Json)
