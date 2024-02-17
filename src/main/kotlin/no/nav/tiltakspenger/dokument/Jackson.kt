@@ -18,6 +18,7 @@ val objectMapper: ObjectMapper = JsonMapper.builder()
     .disable(MapperFeature.ALLOW_FINAL_FIELDS_AS_MUTATORS)
     .enable(DeserializationFeature.FAIL_ON_NULL_FOR_PRIMITIVES)
     .enable(DeserializationFeature.FAIL_ON_NUMBERS_FOR_ENUMS)
+    .enable(SerializationFeature.INDENT_OUTPUT)
     .build()
 
 inline fun <reified K, reified V> ObjectMapper.readMap(value: String): Map<K, V> = readValue(
