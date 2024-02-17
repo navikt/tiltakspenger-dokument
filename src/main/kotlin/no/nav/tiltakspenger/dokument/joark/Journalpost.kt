@@ -5,6 +5,8 @@ import no.nav.tiltakspenger.dokument.meldekort.DokumentMeldekortDTO
 import no.nav.tiltakspenger.dokument.objectMapper
 import no.nav.tiltakspenger.dokument.søknad.SøknadDTO
 import no.nav.tiltakspenger.dokument.søknad.Vedlegg
+import java.time.format.DateTimeFormatter
+import java.time.temporal.WeekFields
 import java.util.Base64
 
 sealed class Journalpost {
@@ -99,15 +101,23 @@ sealed class Journalpost {
                 ),
             )
 
+        private fun lagMeldekortTittel(meldekortDTO: DokumentMeldekortDTO): String {
+            // Meldekort for uke 5 - 6 (29.01.2024 - 11.02.2024)
+            val formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy")
+            return "Meldekort for uke ${meldekortDTO.meldekortPeriode.fom.get(WeekFields.ISO.weekOfWeekBasedYear())}" +
+                " - ${meldekortDTO.meldekortPeriode.tom.get(WeekFields.ISO.weekOfWeekBasedYear())}" +
+                " (${meldekortDTO.meldekortPeriode.fom.format(formatter)} - ${meldekortDTO.meldekortPeriode.tom.format(formatter)})"
+        }
+
         private fun lagMeldekortDokument(meldekortDTO: DokumentMeldekortDTO): JournalpostDokument =
             JournalpostDokument(
-                tittel = DokumentTittel.MELDEKORT.value,
+                tittel = lagMeldekortTittel(meldekortDTO),
                 brevkode = BrevKode.MELDEKORT,
                 dokumentvarianter = listOf(
                     DokumentVariant.OriginalJson(
                         fysiskDokument = Base64.getEncoder()
                             .encodeToString(objectMapper.writeValueAsString(meldekortDTO).toByteArray()),
-                        tittel = DokumentTittel.MELDEKORT.value,
+                        tittel = lagMeldekortTittel(meldekortDTO),
                     ),
                 ),
             )
