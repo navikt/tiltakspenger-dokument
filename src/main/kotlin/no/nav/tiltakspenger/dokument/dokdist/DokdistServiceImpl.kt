@@ -12,7 +12,7 @@ class DokdistServiceImpl(
             bestillendeFagsystem = "IND",
             dokumentProdApp = "Tiltakspenger",
             distribusjonstype = DistribusjonsType.VEDTAK,
-            distrubusjonstidspunkt = Distribusjonstidspunkt.KJERNETID,
+            distribusjonstidspunkt = Distribusjonstidspunkt.KJERNETID,
         )
         return dokdistClient.distribuerJournalpost(dokdistDTO, callId)
     }

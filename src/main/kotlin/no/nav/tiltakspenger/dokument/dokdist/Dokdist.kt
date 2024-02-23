@@ -5,7 +5,7 @@ data class DokdistDTO(
     val bestillendeFagsystem: String,
     val dokumentProdApp: String,
     val distribusjonstype: DistribusjonsType,
-    val distrubusjonstidspunkt: Distribusjonstidspunkt,
+    val distribusjonstidspunkt: Distribusjonstidspunkt,
 )
 
 data class DokdistResponse(
