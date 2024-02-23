@@ -10,7 +10,7 @@ class DokdistServiceImpl(
         val dokdistDTO = DokdistDTO(
             journalpostId = journalpostId,
             bestillendeFagsystem = "IND",
-            dokumentProdApp = "tiltakspenger-dokument",
+            dokumentProdApp = "Tiltakspenger",
             distribusjonstype = DistribusjonsType.VEDTAK,
             distrubusjonstidspunkt = Distribusjonstidspunkt.KJERNETID,
         )
