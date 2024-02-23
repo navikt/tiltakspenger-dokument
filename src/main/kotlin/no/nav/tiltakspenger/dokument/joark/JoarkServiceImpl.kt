@@ -28,7 +28,7 @@ class JoarkServiceImpl(
 
     override suspend fun sendBrevPdfTilJoark(pdf: ByteArray, brevDTO: BrevDTO, callId: String): String {
         val journalpost = Journalpost.Brevpost(
-            fnr = brevDTO.personalia.ident,
+            fnr = brevDTO.personaliaDTO.ident,
             brevDTO = brevDTO,
             pdf = pdf,
             saksId = brevDTO.saksnummer,
