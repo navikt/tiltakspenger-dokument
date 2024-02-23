@@ -8,7 +8,7 @@ class DokdistServiceImpl(
 ) : DokdistService {
     override suspend fun distribuerJournalpost(journalpostId: String, callId: String): String {
         val dokdistDTO = DokdistDTO(
-            journalpost = journalpostId,
+            journalpostId = journalpostId,
             bestillendeFagsystem = "IND",
             dokumentProdApp = "tiltakspenger-dokument",
             distribusjonstype = DistribusjonsType.VEDTAK,

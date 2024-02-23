@@ -1,7 +1,7 @@
 package no.nav.tiltakspenger.dokument.dokdist
 
 data class DokdistDTO(
-    val journalpost: String,
+    val journalpostId: String,
     val bestillendeFagsystem: String,
     val dokumentProdApp: String,
     val distribusjonstype: DistribusjonsType,

@@ -51,38 +51,38 @@ class DokdistClient(
                         throw IllegalStateException("Kallet til Dokdist gikk ok, men vi fikk ingen bestillingsId")
                     }
 
-                    log.info("Vi har distribuert journalpost med id : ${dokdistDTO.journalpost} og fikk bestillingsid $bestillingId")
+                    log.info("Vi har distribuert journalpost med id : ${dokdistDTO.journalpostId} og fikk bestillingsid $bestillingId")
                     return bestillingId
                 }
 
                 HttpStatusCode.BadRequest -> {
-                    log.info("Ugyldig input. Validering av request body, eller validering av journalposten som journalpostId ${dokdistDTO.journalpost} refererer til feilet.}")
-                    return "Ugyldig input for dokumentdistribusjon av journalpost med id: ${dokdistDTO.journalpost}. ${res.status}"
+                    log.info("Ugyldig input. Validering av request body, eller validering av journalposten som journalpostId ${dokdistDTO.journalpostId} refererer til feilet.}")
+                    return "Ugyldig input for dokumentdistribusjon av journalpost med id: ${dokdistDTO.journalpostId}. ${res.status}"
                 }
 
                 HttpStatusCode.NotFound -> {
-                    log.info("Bruker mangler tilgang for å vise journalposten eller ugyldig OIDC token. ${dokdistDTO.journalpost}")
-                    return "Bruker mangler tilgang for å vise journalposten eller ugyldig OIDC token. ${dokdistDTO.journalpost}. ${res.status}"
+                    log.info("Bruker mangler tilgang for å vise journalposten eller ugyldig OIDC token. ${dokdistDTO.journalpostId}")
+                    return "Bruker mangler tilgang for å vise journalposten eller ugyldig OIDC token. ${dokdistDTO.journalpostId}. ${res.status}"
                 }
 
                 HttpStatusCode.Unauthorized -> {
-                    log.info("Journalposten med id: ${dokdistDTO.journalpost} ble ikke funnet.")
-                    return "Journalposten med id: ${dokdistDTO.journalpost} ble ikke funnet. ${res.status}"
+                    log.info("Journalposten med id: ${dokdistDTO.journalpostId} ble ikke funnet.")
+                    return "Journalposten med id: ${dokdistDTO.journalpostId} ble ikke funnet. ${res.status}"
                 }
 
                 HttpStatusCode.Conflict -> {
-                    log.info("Journalposten med id: ${dokdistDTO.journalpost} er allerede distribuert.")
-                    return "Journalposten med id: ${dokdistDTO.journalpost} er allerede distribuert. ${res.status}"
+                    log.info("Journalposten med id: ${dokdistDTO.journalpostId} er allerede distribuert.")
+                    return "Journalposten med id: ${dokdistDTO.journalpostId} er allerede distribuert. ${res.status}"
                 }
 
                 HttpStatusCode.Gone -> {
-                    log.info("Journalposten med id: ${dokdistDTO.journalpost} kan ikke distribueres. Bruker er død og har ukjent adresse.")
-                    return "Journalposten med id: ${dokdistDTO.journalpost} kan ikke distribueres. Bruker er død og har ukjent adresse. ${res.status}"
+                    log.info("Journalposten med id: ${dokdistDTO.journalpostId} kan ikke distribueres. Bruker er død og har ukjent adresse.")
+                    return "Journalposten med id: ${dokdistDTO.journalpostId} kan ikke distribueres. Bruker er død og har ukjent adresse. ${res.status}"
                 }
 
                 HttpStatusCode.InternalServerError -> {
-                    log.info("Teknisk feil under prosessering av forsendelse med journalpostId: ${dokdistDTO.journalpost}.")
-                    return "Teknisk feil under prosessering av forsendelse med journalpostId: ${dokdistDTO.journalpost}. ${res.status}"
+                    log.info("Teknisk feil under prosessering av forsendelse med journalpostId: ${dokdistDTO.journalpostId}.")
+                    return "Teknisk feil under prosessering av forsendelse med journalpostId: ${dokdistDTO.journalpostId}. ${res.status}"
                 }
 
                 else -> {
