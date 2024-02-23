@@ -46,6 +46,7 @@ spec:
         - application: tiltakspenger-pdfgen
       external:
         - host: {{outboundExternalUrls.dokarkiv}}
+        - host: {{outboundExternalUrls.dokdist}}
   env:
     - name: JOARK_ENDPOINT_URL
       value: {{ endpoints.joark }}
