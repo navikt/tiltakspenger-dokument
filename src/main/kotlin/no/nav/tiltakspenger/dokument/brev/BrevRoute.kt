@@ -16,14 +16,14 @@ fun Route.brevRoutes(brevService: BrevService) {
         val brevDTO = call.receive<BrevDTO>()
 
         val journalpostId = brevService.arkiverBrevIJoark(brevDTO, call.callId!!)
-        // val bestillingId = brevService.distribuerJournalpost(journalpostId, call.callId!!)
+        val bestillingId = brevService.distribuerJournalpost(journalpostId, call.callId!!)
 
         val brevResponse = BrevResponse(
             joarkResponse = JoarkResponse(
                 journalpostId = journalpostId,
                 innsendingTidspunkt = brevDTO.innsendingTidspunkt,
             ),
-            bestillingId = "bestillingId",
+            bestillingId = bestillingId,
         )
         call.respond(status = HttpStatusCode.OK, message = brevResponse)
     }
