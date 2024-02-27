@@ -9,7 +9,7 @@ data class DokdistDTO(
 )
 
 data class DokdistResponse(
-    val bestillingId: String,
+    val bestillingsId: String,
 )
 
 enum class DistribusjonsType(val value: String) {

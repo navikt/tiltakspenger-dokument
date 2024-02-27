@@ -46,7 +46,7 @@ class DokdistClient(
                     val response = res.call.body<DokdistResponse>()
                     log.info(response.toString())
 
-                    val bestillingId = response.bestillingId.ifEmpty {
+                    val bestillingId = response.bestillingsId.ifEmpty {
                         log.error("Kallet til Dokdist gikk ok, men vi fikk ingen bestillingsId")
                         throw IllegalStateException("Kallet til Dokdist gikk ok, men vi fikk ingen bestillingsId")
                     }
