@@ -8,7 +8,6 @@ val tokenSupportVersion = "3.2.0"
 plugins {
     application
     kotlin("jvm") version "1.9.21"
-    // id("ca.cutterslade.analyze") version "1.9.1"
     id("com.diffplug.spotless") version "6.23.3"
 }
 
@@ -36,7 +35,8 @@ dependencies {
     implementation("io.ktor:ktor-serialization:$ktorVersion")
     implementation("io.ktor:ktor-serialization-jackson:$ktorVersion")
 
-    // Potensiell Libs-mat
+    implementation("com.github.navikt.tiltakspenger-libs:dokument-dtos:0.0.88")
+
     implementation("org.apache.commons:commons-text:$apacheCommonsTextVersion")
 
     // Align versions of all Kotlin components
@@ -46,7 +46,6 @@ dependencies {
     implementation("net.logstash.logback:logstash-logback-encoder:7.4")
     implementation("io.github.microutils:kotlin-logging-jvm:3.0.5")
     implementation("org.jetbrains:annotations:24.1.0")
-    // implementation("com.github.navikt:rapids-and-rivers:2022112407251669271100.df879df951cf")
     implementation("com.natpryce:konfig:1.6.10.0")
 
     // Jackson
@@ -104,19 +103,9 @@ tasks {
     test {
         // JUnit 5 support
         useJUnitPlatform()
-        // https://phauer.com/2018/best-practices-unit-testing-kotlin/
         systemProperty("junit.jupiter.testinstance.lifecycle.default", "per_class")
     }
-    /*
-    analyzeClassesDependencies {
-        warnUsedUndeclared = true
-        warnUnusedDeclared = true
-    }
-    analyzeTestClassesDependencies {
-        warnUsedUndeclared = true
-        warnUnusedDeclared = true
-    }
-     */
+
 }
 
 task("addPreCommitGitHookOnBuild") {

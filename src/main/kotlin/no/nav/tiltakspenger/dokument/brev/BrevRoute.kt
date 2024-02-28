@@ -9,6 +9,8 @@ import io.ktor.server.routing.Route
 import io.ktor.server.routing.post
 import mu.KotlinLogging
 import no.nav.tiltakspenger.dokument.joark.JoarkResponse
+import no.nav.tiltakspenger.libs.dokument.BrevDTO
+import java.time.LocalDateTime
 
 val log = KotlinLogging.logger { }
 fun Route.brevRoutes(brevService: BrevService) {
@@ -21,7 +23,7 @@ fun Route.brevRoutes(brevService: BrevService) {
         val brevResponse = BrevResponse(
             joarkResponse = JoarkResponse(
                 journalpostId = journalpostId,
-                innsendingTidspunkt = brevDTO.innsendingTidspunkt,
+                innsendingTidspunkt = LocalDateTime.now(),
             ),
             bestillingId = bestillingId,
         )
