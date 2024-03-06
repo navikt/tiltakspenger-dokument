@@ -42,6 +42,7 @@ class JoarkServiceImpl(
             meldekortDTO = meldekortDTO,
             saksId = meldekortDTO.sakId,
         )
-        return joarkClient.opprettJournalpost(journalpost, callId, forsoekFerdigstill = true)
+        return "dummyJournalpostId"
+        // return joarkClient.opprettJournalpost(journalpost, callId, forsoekFerdigstill = true)
     }
 }
