@@ -1,8 +1,8 @@
 package no.nav.tiltakspenger.dokument.pdfgen
 
-import no.nav.tiltakspenger.dokument.brev.BrevDTO
 import no.nav.tiltakspenger.dokument.søknad.SøknadDTO
 import no.nav.tiltakspenger.dokument.søknad.Vedlegg
+import no.nav.tiltakspenger.libs.dokument.BrevDTO
 
 class PdfServiceImpl(
     private val pdfGenerator: PdfGenerator,

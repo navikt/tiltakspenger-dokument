@@ -3,6 +3,7 @@ package no.nav.tiltakspenger.dokument.brev
 import no.nav.tiltakspenger.dokument.dokdist.DokdistService
 import no.nav.tiltakspenger.dokument.joark.JoarkService
 import no.nav.tiltakspenger.dokument.pdfgen.PdfService
+import no.nav.tiltakspenger.libs.dokument.BrevDTO
 
 class BrevServiceImpl(
     private val pdfService: PdfService,
