@@ -114,6 +114,12 @@ sealed class Journalpost {
                 tittel = lagMeldekortTittel(meldekortDTO),
                 brevkode = BrevKode.MELDEKORT,
                 dokumentvarianter = listOf(
+                    DokumentVariant.ArkivPDF(
+                        fysiskDokument = Base64.getEncoder()
+                            // her må vi lage en ordentlig pdf
+                            .encodeToString(objectMapper.writeValueAsString(meldekortDTO).toByteArray()),
+                        tittel = lagMeldekortTittel(meldekortDTO),
+                    ),
                     DokumentVariant.OriginalJson(
                         fysiskDokument = Base64.getEncoder()
                             .encodeToString(objectMapper.writeValueAsString(meldekortDTO).toByteArray()),
