@@ -8,5 +8,5 @@ import no.nav.tiltakspenger.libs.dokument.BrevDTO
 interface JoarkService {
     suspend fun sendSøknadPdfTilJoark(pdf: ByteArray, søknadDTO: SøknadDTO, vedlegg: List<Vedlegg>, callId: String): String
     suspend fun sendBrevPdfTilJoark(pdf: ByteArray, brevDTO: BrevDTO, callId: String): String
-    suspend fun sendMeldekortJsonTilJoark(meldekortDTO: DokumentMeldekortDTO, callId: String): String
+    suspend fun sendMeldekortJsonTilJoark(pdf: ByteArray, meldekortDTO: DokumentMeldekortDTO, callId: String): String
 }

@@ -66,6 +66,7 @@ sealed class Journalpost {
 
     data class Meldekortpost(
         val fnr: String,
+        val pdf: ByteArray,
         val meldekortDTO: DokumentMeldekortDTO,
         val saksId: String,
     ) : Journalpost() {
@@ -78,6 +79,7 @@ sealed class Journalpost {
         override val sak: Sak = Sak.Fagsak(saksId)
         override val dokumenter = mutableListOf(
             lagMeldekortDokument(
+                pdf = pdf,
                 meldekortDTO = meldekortDTO,
             ),
         )
@@ -109,15 +111,13 @@ sealed class Journalpost {
                 " (${meldekortDTO.meldekortPeriode.fom.format(formatter)} - ${meldekortDTO.meldekortPeriode.tom.format(formatter)})"
         }
 
-        private fun lagMeldekortDokument(meldekortDTO: DokumentMeldekortDTO): JournalpostDokument =
+        private fun lagMeldekortDokument(pdf: ByteArray, meldekortDTO: DokumentMeldekortDTO): JournalpostDokument =
             JournalpostDokument(
                 tittel = lagMeldekortTittel(meldekortDTO),
                 brevkode = BrevKode.MELDEKORT,
                 dokumentvarianter = listOf(
                     DokumentVariant.ArkivPDF(
-                        fysiskDokument = Base64.getEncoder()
-                            // her må vi lage en ordentlig pdf
-                            .encodeToString(objectMapper.writeValueAsString(meldekortDTO).toByteArray()),
+                        fysiskDokument = Base64.getEncoder().encodeToString(pdf),
                         tittel = lagMeldekortTittel(meldekortDTO),
                     ),
                     DokumentVariant.OriginalJson(

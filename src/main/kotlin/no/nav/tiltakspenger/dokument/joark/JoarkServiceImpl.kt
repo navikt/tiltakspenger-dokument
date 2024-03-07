@@ -36,13 +36,13 @@ class JoarkServiceImpl(
         return joarkClient.opprettJournalpost(journalpost, callId, forsoekFerdigstill = true)
     }
 
-    override suspend fun sendMeldekortJsonTilJoark(meldekortDTO: DokumentMeldekortDTO, callId: String): String {
+    override suspend fun sendMeldekortJsonTilJoark(pdf: ByteArray, meldekortDTO: DokumentMeldekortDTO, callId: String): String {
         val journalpost = Journalpost.Meldekortpost(
             fnr = meldekortDTO.personopplysninger.ident,
+            pdf = pdf,
             meldekortDTO = meldekortDTO,
             saksId = meldekortDTO.sakId,
         )
-        return "dummyJournalpostId"
-        // return joarkClient.opprettJournalpost(journalpost, callId, forsoekFerdigstill = true)
+        return joarkClient.opprettJournalpost(journalpost, callId, forsoekFerdigstill = true)
     }
 }
