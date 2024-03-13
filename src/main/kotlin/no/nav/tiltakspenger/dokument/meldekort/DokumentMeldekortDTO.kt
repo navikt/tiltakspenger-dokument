@@ -41,6 +41,7 @@ data class MeldekortDagDTO(
 )
 
 enum class MeldekortDagStatusDTO(status: String) {
+    SPERRET("Ikke rett på tiltakspenger"),
     IKKE_UTFYLT("Ikke utfylt"),
     DELTATT("Deltatt"),
     IKKE_DELTATT("Ikke deltatt"),
