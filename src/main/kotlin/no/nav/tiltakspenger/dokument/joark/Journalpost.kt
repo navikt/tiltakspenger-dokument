@@ -72,9 +72,9 @@ sealed class Journalpost {
     ) : Journalpost() {
         override val avsenderMottaker: AvsenderMottaker = AvsenderMottaker(id = fnr)
         override val bruker: Bruker = Bruker(id = fnr)
-        override val journalpostType: JournalPostType = JournalPostType.INNGAAENDE
+        override val journalpostType: JournalPostType = JournalPostType.NOTAT
         override val kanal: String = Kanal.MELDEKORT.value
-        override val tittel: String = DokumentTittel.MELDEKORT.value
+        override val tittel: String = lagMeldekortTittel(meldekortDTO)
         override val journalfoerendeEnhet: String = "9999"
         override val sak: Sak = Sak.Fagsak(saksId)
         override val dokumenter = mutableListOf(
@@ -187,7 +187,7 @@ data class Bruker(
 sealed class Sak {
     data class Fagsak(
         val fagsakId: String,
-        val fagsaksystem: String = "AO01",
+        val fagsaksystem: String = "TILTAKSPENGER",
         val sakstype: String = "FAGSAK",
     ) : Sak()
 }
@@ -234,29 +234,23 @@ sealed class DokumentVariant {
 enum class JournalPostType(val value: String) {
     INNGAAENDE("INNGAAENDE"),
     UTGAAENDE("UTGAAENDE"),
+    NOTAT("NOTAT"),
 }
 
 enum class DokumentTittel(val value: String) {
     SOKNAD("Søknad om tiltakspenger"),
-    BREV("Vedtaksbrev for søknad om tiltakspenger"),
-    MELDEKORT("Meldekort for tiltakspenger"),
+    BREV("Vedtak om tiltakspenger"),
 }
 
 enum class BrevKode(val value: String) {
     SOKNAD("NAV 76-13.45"),
-    BREV("NAV 76-13.04"), // TODO: Undersøke hvilken/hvilke brevkode(r) som brukes for vedtaksbrev
-    MELDEKORT("TP-MELDEKORT"),
+    BREV("BREV-TILTAKSPENGER"),
+    MELDEKORT("MELDEKORT-TILTAKSPENGER"),
     VEDLEGG("S1"),
-}
-
-enum class FilNavn(val value: String) {
-    SOKNAD("tiltakspengersoknad.json"),
-    BREV("vedtaksbrev.json"),
-    MELDEKORT("meldekort.json"),
 }
 
 enum class Kanal(val value: String) {
     SOKNAD("NAV_NO"),
-    BREV("NAV_NO"), // TODO: Finne riktig verdi for utsendingskanal på brev
-    MELDEKORT("INNSENDT_NAV_ANSATT"), // TODO: Bekreft om denne er riktig kanal med fag https://confluence.adeo.no/display/BOA/Mottakskanal
+    BREV("NAV_NO"),
+    MELDEKORT("INNSENDT_NAV_ANSATT"),
 }
