@@ -35,7 +35,7 @@ dependencies {
     implementation("io.ktor:ktor-serialization:$ktorVersion")
     implementation("io.ktor:ktor-serialization-jackson:$ktorVersion")
 
-    implementation("com.github.navikt.tiltakspenger-libs:dokument-dtos:0.0.88")
+    implementation("com.github.navikt.tiltakspenger-libs:dokument-dtos:0.0.106")
 
     implementation("org.apache.commons:commons-text:$apacheCommonsTextVersion")
 
