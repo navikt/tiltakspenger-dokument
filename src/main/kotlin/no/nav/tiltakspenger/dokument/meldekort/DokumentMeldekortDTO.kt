@@ -41,12 +41,13 @@ data class MeldekortDagDTO(
 )
 
 enum class MeldekortDagStatusDTO(status: String) {
-    SPERRET("Ikke rett på tiltakspenger"),
+    SPERRET("sperret"),
     IKKE_UTFYLT("Ikke utfylt"),
-    DELTATT("Deltatt"),
-    IKKE_DELTATT("Ikke deltatt"),
-    FRAVÆR_SYK("Fravær syk"),
-    FRAVÆR_SYKT_BARN("Fravær sykt barn"),
-    FRAVÆR_VELFERD("Fravær velferd"),
-    LØNN_FOR_TID_I_ARBEID("Lønn for tid i arbeid"),
+    DELTATT_UTEN_LØNN_I_TILTAKET("Deltatt uten lønn i tiltaket"),
+    DELTATT_MED_LØNN_I_TILTAKET("Deltatt med lønn i tiltaket"),
+    IKKE_DELTATT("Ikke deltatt i tiltaket"),
+    FRAVÆR_SYK("Fravær - Syk"),
+    FRAVÆR_SYKT_BARN("Fravær - Sykt barn"),
+    FRAVÆR_VELFERD_GODKJENT_AV_NAV("Fravær - Velferd. Godkjent av NAV"),
+    FRAVÆR_VELFERD_IKKE_GODKJENT_AV_NAV("Fravær - Velferd. Ikke godkjent av NA"),
 }
