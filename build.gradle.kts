@@ -4,6 +4,7 @@ val mockkVersion = "1.13.8"
 val jacksonVersion = "2.16.0"
 val apacheCommonsTextVersion = "1.11.0"
 val tokenSupportVersion = "3.2.0"
+val felleslibVersion = "0.0.207"
 
 plugins {
     application
@@ -35,7 +36,7 @@ dependencies {
     implementation("io.ktor:ktor-serialization:$ktorVersion")
     implementation("io.ktor:ktor-serialization-jackson:$ktorVersion")
 
-    implementation("com.github.navikt.tiltakspenger-libs:dokument-dtos:0.0.106")
+    implementation("com.github.navikt.tiltakspenger-libs:dokument-dtos:$felleslibVersion")
 
     implementation("org.apache.commons:commons-text:$apacheCommonsTextVersion")
 
